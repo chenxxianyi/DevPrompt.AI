@@ -18,11 +18,14 @@ func (r *GeneratedPromptRepository) Create(gp *model.GeneratedPrompt) error {
 	return r.db.Create(gp).Error
 }
 
-func (r *GeneratedPromptRepository) FindByUserID(userID uint64, page, pageSize int) ([]model.GeneratedPrompt, int64, error) {
+func (r *GeneratedPromptRepository) FindByUserID(userID uint64, genType string, page, pageSize int) ([]model.GeneratedPrompt, int64, error) {
 	var prompts []model.GeneratedPrompt
 	var total int64
 
 	query := r.db.Model(&model.GeneratedPrompt{}).Where("user_id = ?", userID)
+	if genType != "" {
+		query = query.Where("type = ?", genType)
+	}
 	if err := query.Count(&total).Error; err != nil {
 		return nil, 0, err
 	}

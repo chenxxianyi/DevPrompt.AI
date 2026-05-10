@@ -91,29 +91,31 @@ func (s *GeneratorService) Generate(userID uint64, genType, title string, input 
 		return nil, fmt.Errorf("账号已被禁用")
 	}
 
-	// 3. 检查会员是否有效
-	if !CheckMembership(user) {
+	// 3. 检查会员是否有效（管理员不受限制）
+	if user.Role != "admin" && !CheckMembership(user) {
 		return nil, fmt.Errorf("会员已过期，请续费后使用")
 	}
 
-	// 4. 获取每日限制
-	dailyLimit := s.membershipSvc.GetDailyLimit(user.MembershipLevel)
+	// 4. 获取每日限制（管理员无限制）
+	if user.Role != "admin" {
+		dailyLimit := s.membershipSvc.GetDailyLimit(user.MembershipLevel)
 
-	// 5. 检查每日生成次数
-	count, limit, allowed, err := s.rateLimitSvc.CheckDailyLimit(userID, dailyLimit)
-	if err != nil {
-		return nil, fmt.Errorf("限流检查失败: %w", err)
-	}
-	if !allowed {
-		return nil, fmt.Errorf("今日生成次数已达上限 (%d/%d)，请明天再试", count, limit)
-	}
+		// 5. 检查每日生成次数
+		count, limit, allowed, err := s.rateLimitSvc.CheckDailyLimit(userID, dailyLimit)
+		if err != nil {
+			return nil, fmt.Errorf("限流检查失败: %w", err)
+		}
+		if !allowed {
+			return nil, fmt.Errorf("今日生成次数已达上限 (%d/%d)，请明天再试", count, limit)
+		}
 
-	// 6. 接口级限流
-	ok, err := s.rateLimitSvc.CheckRateLimit(userID, genType, 30)
-	if err != nil || !ok {
-		return nil, fmt.Errorf("请求过于频繁，请稍后重试")
-	}
+		// 6. 接口级限流
+		ok, err := s.rateLimitSvc.CheckRateLimit(userID, genType, 30)
+		if err != nil || !ok {
+			return nil, fmt.Errorf("请求过于频繁，请稍后重试")
+		}
 
+	}
 	// 7. 构建消息
 	inputJSON, _ := json.Marshal(input)
 	messages := []provider.ChatMessage{
@@ -178,7 +180,7 @@ func (s *GeneratorService) Generate(userID uint64, genType, title string, input 
 }
 
 // GetHistory 获取用户生成历史
-func (s *GeneratorService) GetHistory(userID uint64, page, pageSize int) (*response.PaginatedData, error) {
+func (s *GeneratorService) GetHistory(userID uint64, genType string, page, pageSize int) (*response.PaginatedData, error) {
 	if page < 1 {
 		page = 1
 	}
@@ -186,7 +188,7 @@ func (s *GeneratorService) GetHistory(userID uint64, page, pageSize int) (*respo
 		pageSize = 20
 	}
 
-	prompts, total, err := s.genRepo.FindByUserID(userID, page, pageSize)
+	prompts, total, err := s.genRepo.FindByUserID(userID, genType, page, pageSize)
 	if err != nil {
 		return nil, err
 	}

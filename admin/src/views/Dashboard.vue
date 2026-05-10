@@ -2,7 +2,7 @@
   <div class="dashboard">
     <h2 class="page-title">控制台</h2>
     <el-row :gutter="20">
-      <el-col :span="6">
+      <el-col :span="4">
         <el-card shadow="hover" class="stat-card">
           <div class="stat-inner">
             <div class="stat-icon" style="background: #e6f7ff;">
@@ -15,7 +15,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="4">
         <el-card shadow="hover" class="stat-card">
           <div class="stat-inner">
             <div class="stat-icon" style="background: #f6ffed;">
@@ -28,7 +28,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="4">
         <el-card shadow="hover" class="stat-card">
           <div class="stat-inner">
             <div class="stat-icon" style="background: #fff7e6;">
@@ -41,7 +41,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="4">
         <el-card shadow="hover" class="stat-card">
           <div class="stat-inner">
             <div class="stat-icon" style="background: #f0f5ff;">
@@ -54,6 +54,19 @@
           </div>
         </el-card>
       </el-col>
+      <el-col :span="4">
+        <el-card shadow="hover" class="stat-card">
+          <div class="stat-inner">
+            <div class="stat-icon" style="background: #fff0f6;">
+              <el-icon :size="28" color="#eb2f96"><Grid /></el-icon>
+            </div>
+            <div class="stat-info">
+              <p class="stat-value">{{ stats.projectTypeCount }}</p>
+              <p class="stat-label">项目类型</p>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -62,13 +75,14 @@
 import { ref, onMounted } from 'vue'
 import { getDashboardStats } from '@/api/dashboard'
 import type { DashboardStats } from '@/types'
-import { UserFilled, Document, Cpu, Coin } from '@element-plus/icons-vue'
+import { UserFilled, Document, Cpu, Coin, Grid } from '@element-plus/icons-vue'
 
 const stats = ref<DashboardStats>({
   userCount: 0,
   promptCount: 0,
   callLogCount: 0,
   planCount: 0,
+  projectTypeCount: 0,
 })
 
 onMounted(async () => {

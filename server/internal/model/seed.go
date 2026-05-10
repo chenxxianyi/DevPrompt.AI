@@ -20,6 +20,9 @@ func Seed(db *gorm.DB) error {
 	if err := seedAdminUser(db); err != nil {
 		return err
 	}
+	if err := seedProjectTypes(db); err != nil {
+		return err
+	}
 	log.Println("seed data is ready")
 	return nil
 }
@@ -137,5 +140,30 @@ func seedAdminUser(db *gorm.DB) error {
 		return err
 	}
 	log.Println("default admin user created (admin@devprompt.ai / admin123)")
+	return nil
+}
+
+func seedProjectTypes(db *gorm.DB) error {
+	var count int64
+	if err := db.Model(&ProjectType{}).Count(&count).Error; err != nil {
+		return err
+	}
+	if count > 0 {
+		return nil
+	}
+
+	types := []ProjectType{
+		{Name: "SaaS", Value: "SaaS", Description: "SaaS 软件即服务项目", Sort: 1, Status: "active"},
+		{Name: "电商平台", Value: "电商", Description: "电商平台类项目", Sort: 2, Status: "active"},
+		{Name: "社交应用", Value: "社交", Description: "社交应用类项目", Sort: 3, Status: "active"},
+		{Name: "工具类", Value: "工具", Description: "工具类项目", Sort: 4, Status: "active"},
+		{Name: "企业内部系统", Value: "企业内部", Description: "企业内部系统类项目", Sort: 5, Status: "active"},
+	}
+	for _, t := range types {
+		if err := db.Where("value = ?", t.Value).FirstOrCreate(&t).Error; err != nil {
+			return err
+		}
+	}
+	log.Println("default project types seeded")
 	return nil
 }

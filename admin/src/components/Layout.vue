@@ -47,6 +47,10 @@
             <el-icon><Tickets /></el-icon>
             <span>订单管理</span>
           </el-menu-item>
+          <el-menu-item index="/project-types">
+            <el-icon><Grid /></el-icon>
+            <span>项目类型管理</span>
+          </el-menu-item>
         </el-menu>
       </el-aside>
 
@@ -93,7 +97,7 @@ import { useAuthStore } from '@/store/auth'
 import { useAppStore } from '@/store/app'
 import {
   Odometer, User, Collection, Document, Cpu,
-  List, Coin, Tickets, Fold, Expand, UserFilled,
+  List, Coin, Tickets, Fold, Expand, UserFilled, Grid,
 } from '@element-plus/icons-vue'
 
 const route = useRoute()

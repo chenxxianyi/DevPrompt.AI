@@ -11,6 +11,7 @@ const navLinks = [
   { name: 'generator', label: '生成器', path: '/generator' },
   { name: 'pricing', label: '会员', path: '/pricing' },
 ]
+
 </script>
 
 <template>

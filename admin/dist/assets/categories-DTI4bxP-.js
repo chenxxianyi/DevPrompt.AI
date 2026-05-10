@@ -1,1 +1,0 @@
-import{D as t}from"./index-C3LWrYf9.js";function n(){return t.get("/admin/categories")}function o(e){return t.post("/admin/categories",e)}function i(e,r){return t.put(`/admin/categories/${e}`,r)}function s(e){return t.delete(`/admin/categories/${e}`)}export{o as c,s as d,n as g,i as u};

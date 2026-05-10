@@ -114,3 +114,12 @@ export interface PaginatedData<T> {
   page: number
   pageSize: number
 }
+
+export interface ProjectType {
+  id: number
+  name: string
+  value: string
+  description: string
+  sort: number
+  status: 'active' | 'disabled'
+}

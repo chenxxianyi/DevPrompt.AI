@@ -1,10 +1,23 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import { useUiStore } from '@/store/ui'
 import { useGeneratorStore } from '@/store/generator'
 import { techStacks, aiTools } from '@/mock/data'
+import { getProjectTypes } from '@/api/generator'
+import type { ProjectType } from '@/types'
 
 const ui = useUiStore()
 const gen = useGeneratorStore()
+const projectTypes = ref<ProjectType[]>([])
+
+onMounted(async () => {
+  try {
+    const res = await getProjectTypes()
+    projectTypes.value = res.data.data
+  } catch {
+    // 加载失败时使用空列表
+  }
+})
 
 function toggleTech(name: string) {
   const idx = gen.techStack.indexOf(name)
@@ -40,8 +53,19 @@ function copyResult() {
   <div class="relative z-[1] min-h-screen">
     <div class="max-w-screen-xl mx-auto px-6">
       <div class="py-8 pb-16">
-        <h1 class="text-[28px] font-extrabold mb-2">🏗️ 项目 Prompt 生成器</h1>
-        <p class="mb-8 text-[15px]" style="color:var(--text-secondary)">填写项目信息，AI 将为你生成专业的开发 Prompt</p>
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <h1 class="text-[28px] font-extrabold">🏗️ 项目 Prompt 生成器</h1>
+            <p class="mt-1 text-[15px]" style="color:var(--text-secondary)">填写项目信息，AI 将为你生成专业的开发 Prompt</p>
+          </div>
+          <router-link
+            to="/generator/history"
+            class="hidden md:inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-[13px] font-medium no-underline transition-all"
+            style="background:rgba(139,92,246,.1);color:var(--accent)"
+          >
+            📋 历史记录
+          </router-link>
+        </div>
 
         <!-- Form -->
         <div class="glass p-7 mb-6">
@@ -54,11 +78,9 @@ function copyResult() {
               <label class="text-[13px] font-semibold" style="color:var(--text-secondary)">项目类型</label>
               <select v-model="gen.projectType" class="form-input cursor-pointer">
                 <option value="">请选择项目类型</option>
-                <option value="SaaS">SaaS</option>
-                <option value="电商">电商平台</option>
-                <option value="社交">社交应用</option>
-                <option value="工具">工具类</option>
-                <option value="企业内部">企业内部系统</option>
+                <option v-for="pt in projectTypes" :key="pt.value" :value="pt.value">
+                  {{ pt.name }}
+                </option>
               </select>
             </div>
             <div class="flex flex-col gap-1.5 md:col-span-2">

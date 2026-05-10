@@ -24,6 +24,7 @@ const router = createRouter({
         { path: 'ai-call-logs', name: 'CallLogs', meta: { title: 'AI 调用日志' }, component: () => import('@/views/CallLogs.vue') },
         { path: 'membership-plans', name: 'Plans', meta: { title: '会员套餐管理' }, component: () => import('@/views/Plans.vue') },
         { path: 'orders', name: 'Orders', meta: { title: '订单管理' }, component: () => import('@/views/Orders.vue') },
+        { path: 'project-types', name: 'ProjectTypes', meta: { title: '项目类型管理' }, component: () => import('@/views/ProjectTypes.vue') },
       ],
     },
   ],

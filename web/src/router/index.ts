@@ -7,6 +7,7 @@ const router = createRouter({
     { path: '/prompts', name: 'prompts', component: () => import('@/views/PromptsView.vue') },
     { path: '/prompts/:slug', name: 'prompt-detail', component: () => import('@/views/PromptDetailView.vue') },
     { path: '/generator', name: 'generator', component: () => import('@/views/GeneratorView.vue') },
+    { path: '/generator/history', name: 'history', component: () => import('@/views/HistoryView.vue') },
     { path: '/login', name: 'login', component: () => import('@/views/LoginView.vue') },
     { path: '/pricing', name: 'pricing', component: () => import('@/views/PricingView.vue') },
   ],

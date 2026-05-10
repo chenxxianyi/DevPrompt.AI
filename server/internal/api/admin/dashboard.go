@@ -17,17 +17,19 @@ func NewDashboardHandler(db *gorm.DB) *DashboardHandler {
 
 // Overview GET /api/admin/dashboard
 func (h *DashboardHandler) Overview(c *gin.Context) {
-	var userCount, promptCount, callLogCount, planCount int64
+	var userCount, promptCount, callLogCount, planCount, projectTypeCount int64
 
 	h.db.Table("users").Count(&userCount)
 	h.db.Table("prompt_templates").Count(&promptCount)
 	h.db.Table("ai_call_logs").Count(&callLogCount)
 	h.db.Table("membership_plans").Count(&planCount)
+	h.db.Table("project_types").Count(&projectTypeCount)
 
 	response.Success(c, gin.H{
-		"userCount":     userCount,
-		"promptCount":   promptCount,
-		"callLogCount":  callLogCount,
-		"planCount":     planCount,
+		"userCount":        userCount,
+		"promptCount":      promptCount,
+		"callLogCount":     callLogCount,
+		"planCount":        planCount,
+		"projectTypeCount": projectTypeCount,
 	})
 }

@@ -65,6 +65,7 @@ func main() {
 		&model.AICallLog{},
 		&model.MembershipPlan{},
 		&model.Order{},
+		&model.ProjectType{},
 	); err != nil {
 		log.Fatalf("自动迁移失败: %v", err)
 	}
@@ -104,6 +105,7 @@ func main() {
 	callLogRepo := repository.NewAICallLogRepository(db)
 	planRepo := repository.NewMembershipPlanRepository(db)
 	orderRepo := repository.NewOrderRepository(db)
+	projectTypeRepo := repository.NewProjectTypeRepository(db)
 
 	// Services
 	authService := service.NewAuthService(userRepo, cfg.JWT.Secret, cfg.JWT.ExpireHours)
@@ -138,6 +140,7 @@ func main() {
 	)
 
 	// Handlers
+	projectTypeHandler := api.NewProjectTypeHandler(projectTypeRepo)
 	authHandler := api.NewAuthHandler(authService)
 	promptHandler := api.NewPromptHandler(promptService)
 	generatorHandler := api.NewGeneratorHandler(genService)
@@ -152,6 +155,7 @@ func main() {
 	callLogAdminHandler := admin.NewCallLogAdminHandler(callLogRepo)
 	planAdminHandler := admin.NewPlanAdminHandler(planRepo)
 	orderAdminHandler := admin.NewOrderAdminHandler(orderRepo)
+	projectTypeAdminHandler := admin.NewProjectTypeAdminHandler(projectTypeRepo)
 	dashboardHandler := admin.NewDashboardHandler(db)
 
 	// 6. 创建 Gin 路由
@@ -176,6 +180,8 @@ func main() {
 
 		// Membership (公开)
 		apiGroup.GET("/membership/plans", membershipHandler.ListPlans)
+		// Project Types (公开)
+		apiGroup.GET("/project-types", projectTypeHandler.ListPublic)
 	}
 
 	// ============ 需要认证的路由 ============
@@ -237,6 +243,11 @@ func main() {
 
 		// Orders
 		adminGroup.GET("/orders", orderAdminHandler.List)
+		// Project Types CRUD
+		adminGroup.GET("/project-types", projectTypeAdminHandler.List)
+		adminGroup.POST("/project-types", projectTypeAdminHandler.Create)
+			adminGroup.PUT("/project-types/:id", projectTypeAdminHandler.Update)
+			adminGroup.DELETE("/project-types/:id", projectTypeAdminHandler.Delete)
 	}
 
 	// 7. 启动服务

@@ -122,6 +122,19 @@ export interface DashboardStats {
   promptCount: number
   callLogCount: number
   planCount: number
+  projectTypeCount: number
+}
+
+// 项目类型
+export interface ProjectType {
+  id: number
+  createdAt: string
+  updatedAt: string
+  name: string
+  value: string
+  description: string
+  sort: number
+  status: 'active' | 'disabled'
 }
 
 // 登录

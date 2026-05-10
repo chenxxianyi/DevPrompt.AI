@@ -137,8 +137,9 @@ func (h *GeneratorHandler) History(c *gin.Context) {
 
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", "20"))
+	genType := c.Query("type")
 
-	result, err := h.genService.GetHistory(userID, page, pageSize)
+	result, err := h.genService.GetHistory(userID, genType, page, pageSize)
 	if err != nil {
 		response.InternalError(c, err.Error())
 		return

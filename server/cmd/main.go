@@ -33,18 +33,27 @@ func main() {
 	zapLogger, _ := zap.NewDevelopment()
 	defer zapLogger.Sync()
 
-	// 3. 连接 MySQL
+	// 3. 连接 MySQL（先确保数据库存在）
+	dsnNoDB := fmt.Sprintf("%s:%s@tcp(%s:%d)/?charset=%s&parseTime=True&loc=Local",
+		cfg.MySQL.User, cfg.MySQL.Password, cfg.MySQL.Host, cfg.MySQL.Port,
+		cfg.MySQL.Charset)
+	tmpDB, err := gorm.Open(mysql.Open(dsnNoDB), &gorm.Config{})
+	if err != nil {
+		log.Fatalf("连接 MySQL 失败: %v", err)
+	}
+	tmpDB.Exec("CREATE DATABASE IF NOT EXISTS " + cfg.MySQL.Database + " DEFAULT CHARACTER SET utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci")
+
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&parseTime=True&loc=Local",
 		cfg.MySQL.User, cfg.MySQL.Password, cfg.MySQL.Host, cfg.MySQL.Port,
 		cfg.MySQL.Database, cfg.MySQL.Charset)
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatalf("连接 MySQL 失败: %v", err)
+		log.Fatalf("连接数据库 %s 失败: %v", cfg.MySQL.Database, err)
 	}
-	log.Println("MySQL 连接成功")
+	log.Printf("MySQL 连接成功 (数据库: %s)", cfg.MySQL.Database)
 
-	// Auto-migrate：自动创建/更新表结构
+	// Auto-migrate：自动创建/更新表结构 + 种子数据
 	if err := db.AutoMigrate(
 		&model.User{},
 		&model.PromptCategory{},
@@ -57,9 +66,11 @@ func main() {
 		&model.MembershipPlan{},
 		&model.Order{},
 	); err != nil {
-		log.Printf("警告: 自动迁移失败: %v (请确认 MySQL 已连接且数据库 devprompt_ai 已创建)", err)
-	} else {
-		log.Println("数据库表结构已就绪")
+		log.Fatalf("自动迁移失败: %v", err)
+	}
+	log.Println("数据库表结构已就绪")
+	if err := model.Seed(db); err != nil {
+		log.Fatalf("初始化种子数据失败: %v", err)
 	}
 
 	sqlDB, _ := db.DB()
@@ -76,6 +87,7 @@ func main() {
 	ctx := context.Background()
 	if err := rdb.Ping(ctx).Err(); err != nil {
 		log.Printf("警告: 连接 Redis 失败: %v (限流功能将不可用)", err)
+		cfg.RateLimit.Enabled = false
 	} else {
 		log.Println("Redis 连接成功")
 	}
@@ -119,7 +131,7 @@ func main() {
 		providerMgr.Register("qwen", provider.NewQwenProvider(cfg.AI.Qwen.APIKey, cfg.AI.Qwen.BaseURL))
 	}
 
-	defaultModel := cfg.AI.OpenAI.DefaultModel
+	defaultModel := cfg.AI.DeepSeek.DefaultModel
 	genService := service.NewGeneratorService(
 		providerMgr, genRepo, callLogRepo, userRepo, planRepo,
 		rateLimitSvc, membershipSvc, defaultModel,

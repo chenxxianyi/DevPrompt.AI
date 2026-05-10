@@ -30,6 +30,15 @@ func (r *PromptCategoryRepository) FindBySlug(slug string) (*model.PromptCategor
 	return &cat, err
 }
 
+func (r *PromptCategoryRepository) FindByID(id uint64) (*model.PromptCategory, error) {
+	var cat model.PromptCategory
+	err := r.db.First(&cat, id).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, nil
+	}
+	return &cat, err
+}
+
 func (r *PromptCategoryRepository) Create(cat *model.PromptCategory) error {
 	return r.db.Create(cat).Error
 }

@@ -71,6 +71,7 @@ func (h *AIModelAdminHandler) Update(c *gin.Context) {
 	}
 
 	mdl.ID = id
+	mdl.CreatedAt = existing.CreatedAt // 保留原始创建时间
 	if err := h.modelRepo.Update(&mdl); err != nil {
 		response.InternalError(c, err.Error())
 		return

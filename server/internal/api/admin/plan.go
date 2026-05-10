@@ -83,6 +83,13 @@ func (h *PlanAdminHandler) Update(c *gin.Context) {
 		plan.Features = string(data)
 	}
 
+	existing, err := h.planRepo.FindByID(id)
+	if err != nil || existing == nil {
+		response.NotFound(c, "套餐不存在")
+		return
+	}
+
+	plan.CreatedAt = existing.CreatedAt
 	plan.ID = id
 	if err := h.planRepo.Update(&plan); err != nil {
 		response.InternalError(c, err.Error())

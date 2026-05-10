@@ -208,6 +208,7 @@ func (s *PromptService) AdminUpdate(id uint64, t *model.PromptTemplate) error {
 	if err != nil || existing == nil {
 		return fmt.Errorf("模板不存在")
 	}
+	t.CreatedAt = existing.CreatedAt
 	t.ID = id
 	if len(t.TagsJSON) > 0 {
 		data, _ := json.Marshal(t.TagsJSON)

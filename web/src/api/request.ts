@@ -3,7 +3,7 @@ import type { ApiResponse } from '@/types'
 
 const request = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
-  timeout: 30000,
+  timeout: 120000,
   headers: { 'Content-Type': 'application/json' },
 })
 
@@ -29,7 +29,8 @@ request.interceptors.response.use(
       localStorage.removeItem('user')
       window.location.href = '/login'
     }
-    return Promise.reject(error)
+    const message = error.response?.data?.message || error.message || '请求失败'
+    return Promise.reject(new Error(message))
   },
 )
 

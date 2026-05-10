@@ -17,7 +17,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/redis/go-redis/v9"
-	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -29,10 +28,15 @@ func main() {
 		log.Fatalf("加载配置失败: %v", err)
 	}
 
-	// 2. 初始化日志
-	zapLogger, _ := zap.NewDevelopment()
-	defer zapLogger.Sync()
-
+	// 2. 安全检查：生产环境使用默认 JWT 密钥则拒绝启动
+		weakSecrets := map[string]bool{
+			"": true,
+			"change_me": true,
+			"change_me_to_a_secure_random_string": true,
+		}
+		if cfg.App.Env == "production" && weakSecrets[cfg.JWT.Secret] {
+			log.Fatalf("安全错误: 生产环境必须显式设置强随机 JWT_SECRET")
+		}
 	// 3. 连接 MySQL（先确保数据库存在）
 	dsnNoDB := fmt.Sprintf("%s:%s@tcp(%s:%d)/?charset=%s&parseTime=True&loc=Local",
 		cfg.MySQL.User, cfg.MySQL.Password, cfg.MySQL.Host, cfg.MySQL.Port,
@@ -66,6 +70,7 @@ func main() {
 		&model.MembershipPlan{},
 		&model.Order{},
 		&model.ProjectType{},
+		&model.TrialRequest{},
 	); err != nil {
 		log.Fatalf("自动迁移失败: %v", err)
 	}
@@ -106,6 +111,7 @@ func main() {
 	planRepo := repository.NewMembershipPlanRepository(db)
 	orderRepo := repository.NewOrderRepository(db)
 	projectTypeRepo := repository.NewProjectTypeRepository(db)
+trialRequestRepo := repository.NewTrialRequestRepository(db)
 
 	// Services
 	authService := service.NewAuthService(userRepo, cfg.JWT.Secret, cfg.JWT.ExpireHours)
@@ -146,6 +152,7 @@ func main() {
 	generatorHandler := api.NewGeneratorHandler(genService)
 	membershipHandler := api.NewMembershipHandler(membershipSvc)
 	userHandler := api.NewUserHandler(genService)
+trialRequestHandler := api.NewTrialRequestHandler(trialRequestRepo, planRepo)
 
 	// Admin handlers
 	userAdminHandler := admin.NewUserAdminHandler(userRepo)
@@ -203,6 +210,8 @@ func main() {
 
 		// User
 		authGroup.GET("/user/generate-stats", userHandler.GenerateStats)
+			// Trial Requests
+			authGroup.POST("/trial-requests", trialRequestHandler.Create)
 	}
 
 	// ============ 管理后台路由 ============
@@ -210,6 +219,9 @@ func main() {
 	{
 		// Dashboard
 		adminGroup.GET("/dashboard", dashboardHandler.Overview)
+			// Trial Requests
+			adminGroup.GET("/trial-requests", trialRequestHandler.AdminList)
+			adminGroup.PUT("/trial-requests/:id", trialRequestHandler.AdminUpdateStatus)
 
 		// Users
 		adminGroup.GET("/users", userAdminHandler.List)

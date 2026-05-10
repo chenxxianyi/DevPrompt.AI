@@ -45,7 +45,7 @@ export interface GeneratedPrompt {
   userId: number
   type: 'project' | 'cursor-rules' | 'claude-code' | 'optimize'
   title: string
-  input: Record<string, any>
+  input: string | Record<string, any>
   output: string
   model: string
   provider: string

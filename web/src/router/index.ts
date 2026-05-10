@@ -8,6 +8,7 @@ const router = createRouter({
     { path: '/prompts/:slug', name: 'prompt-detail', component: () => import('@/views/PromptDetailView.vue') },
     { path: '/generator', name: 'generator', component: () => import('@/views/GeneratorView.vue') },
     { path: '/generator/history', name: 'history', component: () => import('@/views/HistoryView.vue') },
+    { path: '/dashboard', name: 'dashboard', component: () => import('@/views/DashboardView.vue') },
     { path: '/login', name: 'login', component: () => import('@/views/LoginView.vue') },
     { path: '/pricing', name: 'pricing', component: () => import('@/views/PricingView.vue') },
   ],

@@ -1,0 +1,23 @@
+node_modules/
+dist/
+web/dist/
+admin/dist/
+*.tsbuildinfo
+*.exe
+.env
+.env.*
+!.env.example
+server/config/config.local.yaml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log

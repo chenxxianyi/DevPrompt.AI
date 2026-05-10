@@ -50,7 +50,7 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_PASSWORD: ""
-      JWT_SECRET: ${JWT_SECRET:-change_me}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET must be set}
       JWT_EXPIRE_HOURS: 168
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
       CLAUDE_API_KEY: ${CLAUDE_API_KEY:-}
@@ -66,11 +66,12 @@ services:
         condition: service_healthy
 
   web:
-    image: nginx:alpine
+    build:
+      context: ./web
+      dockerfile: Dockerfile
     container_name: devprompt-web
     restart: unless-stopped
     volumes:
-      - ./web/dist:/usr/share/nginx/html:ro
       - ./deploy/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
       - "3000:80"

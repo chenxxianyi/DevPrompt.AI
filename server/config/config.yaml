@@ -38,7 +38,7 @@ ai:
     base_url: https://generativelanguage.googleapis.com/v1beta
     default_model: gemini-2.0-flash
   deepseek:
-    api_key: "sk-8ec8a4b25b734394a838b1e01aa8e2e5"
+    api_key: ""
     base_url: https://api.deepseek.com
     default_model: deepseek-chat
   qwen:

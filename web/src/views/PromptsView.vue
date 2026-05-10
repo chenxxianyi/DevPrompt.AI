@@ -63,7 +63,9 @@ const pageButtons = () => {
           <!-- Toolbar -->
           <div class="flex items-center gap-3 mb-5 flex-wrap">
             <div class="relative flex-1 min-w-[200px]">
-              <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm" style="color:var(--text-muted)">🔍</span>
+              <span class="absolute left-3.5 top-1/2 -translate-y-1/2" style="color:var(--text-muted)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              </span>
               <input
                 v-model="prompt.searchKeyword"
                 class="form-input pl-10"

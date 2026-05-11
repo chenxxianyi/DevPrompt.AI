@@ -78,12 +78,17 @@ function goBack() {
 <style scoped>
 .ios-navbar {
   position: sticky;
-  top: var(--ios-topbar-h);
+  top: calc(var(--ios-topbar-h) + 8px);
   z-index: 50;
+  width: 100%;
+  max-width: var(--ios-content-max-web);
+  margin: 0 auto;
+  border-radius: var(--ios-radius-xxl);
   background: var(--ios-glass-bg-light-md);
-  backdrop-filter: blur(var(--ios-glass-blur-md)) saturate(var(--ios-glass-saturate));
-  -webkit-backdrop-filter: blur(var(--ios-glass-blur-md)) saturate(var(--ios-glass-saturate));
-  border-bottom: 0.5px solid var(--ios-color-separator);
+  backdrop-filter: blur(var(--ios-glass-blur-md)) saturate(2.2) brightness(1.03);
+  -webkit-backdrop-filter: blur(var(--ios-glass-blur-md)) saturate(2.2) brightness(1.03);
+  border: 0.5px solid var(--ios-glass-border-light);
+  box-shadow: var(--ios-glass-shadow-layer), inset 0 1px 0 rgba(255,255,255,0.75);
 }
 
 .ios-navbar__inner {
@@ -156,13 +161,15 @@ function goBack() {
 }
 
 .ios-navbar__subbar {
-  padding: 0 var(--ios-web-page-padding) 12px;
+  padding: 0 var(--ios-web-page-padding) 14px;
 }
 
 /* On mobile, use smaller padding and reset sticky top */
 @media (max-width: 768px) {
   .ios-navbar {
-    top: 0;
+    top: calc(var(--ios-topbar-h) + 6px);
+    max-width: calc(100vw - 24px);
+    border-radius: var(--ios-radius-xl);
   }
 
   .ios-navbar__inner {

@@ -155,7 +155,7 @@ function goToPage(p: number) {
 
 .ios-prompts__search {
   position: relative;
-  max-width: 480px;
+  max-width: 320px;
 }
 
 .ios-prompts__search-icon {

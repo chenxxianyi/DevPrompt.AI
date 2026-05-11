@@ -12,6 +12,7 @@ import IosGlassPanel from '../components/IosGlassPanel.vue'
 import IosButton from '../components/IosButton.vue'
 import IosSegmentedControl from '../components/IosSegmentedControl.vue'
 import IosIcon from '../components/IosIcon.vue'
+import IosSelect from '../components/IosSelect.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -158,10 +159,11 @@ function exportMarkdown() {
 
         <div class="ios-field">
           <label class="ios-field__label">项目类型 <span class="ios-field__req">*</span></label>
-          <select v-model="gen.projectType" class="ios-input">
-            <option value="">请选择项目类型</option>
-            <option v-for="pt in projectTypes" :key="pt.value" :value="pt.value">{{ pt.name }}</option>
-          </select>
+          <IosSelect
+            v-model="gen.projectType"
+            :options="projectTypes.map(pt => ({ value: pt.value, label: pt.name }))"
+            placeholder="请选择项目类型"
+          />
         </div>
 
         <div class="ios-field">
@@ -217,10 +219,11 @@ function exportMarkdown() {
 
         <div class="ios-field">
           <label class="ios-field__label">代码风格 <span class="ios-field__req">*</span></label>
-          <select v-model="gen.cursorCodeStyle" class="ios-input">
-            <option value="">请选择代码风格</option>
-            <option v-for="s in codeStyles" :key="s" :value="s">{{ s }}</option>
-          </select>
+          <IosSelect
+            v-model="gen.cursorCodeStyle"
+            :options="codeStyles.map(s => ({ value: s, label: s }))"
+            placeholder="请选择代码风格"
+          />
         </div>
 
         <div class="ios-field">

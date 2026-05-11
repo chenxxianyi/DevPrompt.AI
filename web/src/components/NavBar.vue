@@ -41,6 +41,19 @@ const membershipBadge: Record<string, { label: string; color: string }> = {
       </div>
 
       <div class="flex items-center gap-3">
+        <!-- iOS 风格切换入口 -->
+        <router-link
+          to="/ios26"
+          class="theme-switch-btn"
+          title="切换到 iOS 26 风格"
+        >
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+            <line x1="12" y1="18" x2="12.01" y2="18"/>
+          </svg>
+          <span>新风版</span>
+        </router-link>
+
         <template v-if="auth.isLoggedIn">
           <router-link
             to="/dashboard"
@@ -75,3 +88,32 @@ const membershipBadge: Record<string, { label: string; color: string }> = {
     </div>
   </nav>
 </template>
+
+<style scoped>
+.theme-switch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px 5px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  color: #fff;
+  background: linear-gradient(135deg, #7DD8FA 0%, #4FAAED 45%, #A78BFA 100%);
+  box-shadow: 0 2px 10px rgba(79, 170, 237, 0.35), 0 1px 3px rgba(167, 139, 250, 0.2);
+  transition: filter 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.theme-switch-btn:hover {
+  filter: brightness(1.08) saturate(1.15);
+  box-shadow: 0 4px 16px rgba(79, 170, 237, 0.5), 0 2px 6px rgba(167, 139, 250, 0.3);
+  transform: translateY(-1px);
+}
+
+.theme-switch-btn:active {
+  transform: translateY(0) scale(0.97);
+}
+</style>

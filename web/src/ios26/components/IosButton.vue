@@ -117,14 +117,20 @@ function onClick(ev: MouseEvent) {
   width: 100%;
 }
 
-/* Filled */
+/* Filled — macaron gradient */
 .ios-btn--filled {
-  background: var(--ios-color-tint);
+  background: var(--ios-color-tint-gradient, var(--ios-color-tint));
+  background-size: 200% 200%;
+  background-position: 0% 50%;
   color: #fff;
-  box-shadow: 0 6px 16px var(--ios-color-tint-soft-strong);
+  box-shadow: 0 6px 20px rgba(63, 164, 232, 0.35), 0 2px 6px rgba(167, 139, 250, 0.18);
+  transition: background-position 0.4s var(--ios-ease-gentle),
+    box-shadow 0.2s var(--ios-ease-stiff),
+    transform 0.18s var(--ios-ease-snappy);
 }
 .ios-btn--filled:hover:not(.is-disabled) {
-  background: var(--ios-color-tint-hover);
+  background-position: 100% 50%;
+  box-shadow: 0 8px 28px rgba(63, 164, 232, 0.45), 0 3px 10px rgba(167, 139, 250, 0.24);
 }
 
 /* Tinted */

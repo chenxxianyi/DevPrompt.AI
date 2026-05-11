@@ -25,7 +25,7 @@ export const IOS_TABS: IosTabItem[] = [
     path: '/ios26',
     label: '首页',
     icon: 'M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1Z',
-    match: ['/ios26', '/ios26/'],
+    match: ['/ios26'],
   },
   {
     name: 'ios26-prompts',

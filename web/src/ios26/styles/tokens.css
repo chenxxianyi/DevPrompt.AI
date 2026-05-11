@@ -5,37 +5,41 @@
  * ============================================================ */
 
 .ios26-app {
-  /* ===== Macaron Light Mode ===== */
-  --ios-color-label-primary: rgba(30, 20, 50, 1);
-  --ios-color-label-secondary: rgba(60, 50, 90, 0.58);
-  --ios-color-label-tertiary: rgba(60, 50, 90, 0.32);
-  --ios-color-label-quaternary: rgba(60, 50, 90, 0.16);
+  /* ===== Macaron Blue Light Mode ===== */
+  --ios-color-label-primary: rgba(10, 24, 58, 1);
+  --ios-color-label-secondary: rgba(20, 50, 110, 0.55);
+  --ios-color-label-tertiary: rgba(20, 50, 110, 0.30);
+  --ios-color-label-quaternary: rgba(20, 50, 110, 0.15);
 
-  --ios-color-fill-primary: rgba(120, 100, 180, 0.18);
-  --ios-color-fill-secondary: rgba(120, 100, 180, 0.13);
-  --ios-color-fill-tertiary: rgba(118, 100, 180, 0.09);
-  --ios-color-fill-quaternary: rgba(116, 100, 180, 0.06);
+  --ios-color-fill-primary: rgba(79, 170, 237, 0.18);
+  --ios-color-fill-secondary: rgba(79, 170, 237, 0.12);
+  --ios-color-fill-tertiary: rgba(79, 170, 237, 0.08);
+  --ios-color-fill-quaternary: rgba(79, 170, 237, 0.05);
 
-  --ios-color-bg-primary: #FAF8FF;
-  --ios-color-bg-secondary: #F3EEFF;
-  --ios-color-bg-tertiary: #FAF8FF;
+  --ios-color-bg-primary: #F0F9FF;
+  --ios-color-bg-secondary: #E0F2FE;
+  --ios-color-bg-tertiary: #F0F9FF;
 
-  --ios-color-bg-grouped-primary: #EEE8FF;
-  --ios-color-bg-grouped-secondary: #FAF8FF;
-  --ios-color-bg-grouped-tertiary: #EEE8FF;
+  --ios-color-bg-grouped-primary: #D9EEFF;
+  --ios-color-bg-grouped-secondary: #F0F9FF;
+  --ios-color-bg-grouped-tertiary: #D9EEFF;
 
-  --ios-color-separator: rgba(120, 90, 200, 0.18);
-  --ios-color-separator-opaque: #D4CAE8;
+  --ios-color-separator: rgba(79, 170, 237, 0.20);
+  --ios-color-separator-opaque: #BAE6FD;
 
-  /* Macaron tint — Soft Lavender */
-  --ios-color-tint: #9580C8;
-  --ios-color-tint-hover: #A693D4;
-  --ios-color-tint-pressed: #7D68B8;
-  --ios-color-tint-soft: rgba(149, 128, 200, 0.14);
-  --ios-color-tint-soft-strong: rgba(149, 128, 200, 0.24);
+  /* Macaron tint — Cornflower Blue */
+  --ios-color-tint: #3FA4E8;
+  --ios-color-tint-hover: #64BBEF;
+  --ios-color-tint-pressed: #2485C8;
+  --ios-color-tint-soft: rgba(63, 164, 232, 0.12);
+  --ios-color-tint-soft-strong: rgba(63, 164, 232, 0.22);
 
-  /* Macaron system colors — pastel */
-  --ios-color-systemBlue: #93C5FD;
+  /* Macaron gradient accent — sky → cornflower → lavender */
+  --ios-color-tint-gradient: linear-gradient(135deg, #7DD8FA 0%, #4FAAED 45%, #A78BFA 100%);
+  --ios-color-tint-gradient-soft: linear-gradient(135deg, rgba(125,216,250,0.18) 0%, rgba(79,170,237,0.18) 50%, rgba(167,139,250,0.14) 100%);
+
+  /* Macaron system colors — pastel blue-harmony */
+  --ios-color-systemBlue: #60A5FA;
   --ios-color-systemGreen: #6EE7B7;
   --ios-color-systemRed: #FCA5A5;
   --ios-color-systemOrange: #FDB78A;
@@ -79,7 +83,7 @@
   /* ===== Web / Desktop Layout ===== */
   --ios-sidebar-w: 220px;
   --ios-sidebar-w-collapsed: 64px;
-  --ios-topbar-h: 60px;
+  --ios-topbar-h: 84px;
   --ios-web-page-padding: 32px;
   --ios-content-max-web: 1280px;
 
@@ -89,16 +93,16 @@
   --ios-glass-blur-lg: 14px;
   --ios-glass-saturate: 1.8;
 
-  /* Macaron glass — lavender-tinted */
-  --ios-glass-bg-light-sm: rgba(252, 250, 255, 0.62);
-  --ios-glass-bg-light-md: rgba(250, 247, 255, 0.68);
-  --ios-glass-bg-light-lg: rgba(253, 251, 255, 0.76);
-  --ios-glass-border-light: rgba(200, 180, 255, 0.3);
-  --ios-glass-highlight-light: rgba(255, 255, 255, 0.82);
+  /* Macaron glass — sky-blue-tinted */
+  --ios-glass-bg-light-sm: rgba(240, 250, 255, 0.62);
+  --ios-glass-bg-light-md: rgba(236, 248, 255, 0.70);
+  --ios-glass-bg-light-lg: rgba(242, 251, 255, 0.78);
+  --ios-glass-border-light: rgba(125, 211, 252, 0.35);
+  --ios-glass-highlight-light: rgba(255, 255, 255, 0.85);
 
-  --ios-glass-shadow-layer: 0 18px 40px rgba(120, 80, 200, 0.1);
-  --ios-glass-shadow-background: 0 32px 80px rgba(120, 80, 200, 0.07);
-  --ios-glass-shadow-press: 0 4px 14px rgba(120, 80, 200, 0.12);
+  --ios-glass-shadow-layer: 0 18px 40px rgba(63, 164, 232, 0.12);
+  --ios-glass-shadow-background: 0 32px 80px rgba(63, 164, 232, 0.08);
+  --ios-glass-shadow-press: 0 4px 14px rgba(63, 164, 232, 0.14);
 
   /* ===== Animation ===== */
   --ios-duration-tab: 0.3s;
@@ -216,34 +220,37 @@
 }
 
 .ios26-app[data-theme='light'] {
-  --ios-color-label-primary: rgba(0, 0, 0, 1);
-  --ios-color-label-secondary: rgba(60, 60, 67, 0.6);
-  --ios-color-label-tertiary: rgba(60, 60, 67, 0.3);
-  --ios-color-label-quaternary: rgba(60, 60, 67, 0.18);
+  --ios-color-label-primary: rgba(10, 24, 58, 1);
+  --ios-color-label-secondary: rgba(20, 50, 110, 0.55);
+  --ios-color-label-tertiary: rgba(20, 50, 110, 0.30);
+  --ios-color-label-quaternary: rgba(20, 50, 110, 0.15);
 
-  --ios-color-fill-primary: rgba(120, 100, 180, 0.18);
-  --ios-color-fill-secondary: rgba(120, 100, 180, 0.13);
-  --ios-color-fill-tertiary: rgba(118, 100, 180, 0.09);
-  --ios-color-fill-quaternary: rgba(116, 100, 180, 0.06);
+  --ios-color-fill-primary: rgba(79, 170, 237, 0.18);
+  --ios-color-fill-secondary: rgba(79, 170, 237, 0.12);
+  --ios-color-fill-tertiary: rgba(79, 170, 237, 0.08);
+  --ios-color-fill-quaternary: rgba(79, 170, 237, 0.05);
 
-  --ios-color-bg-primary: #FAF8FF;
-  --ios-color-bg-secondary: #F3EEFF;
-  --ios-color-bg-tertiary: #FAF8FF;
+  --ios-color-bg-primary: #F0F9FF;
+  --ios-color-bg-secondary: #E0F2FE;
+  --ios-color-bg-tertiary: #F0F9FF;
 
-  --ios-color-bg-grouped-primary: #EEE8FF;
-  --ios-color-bg-grouped-secondary: #FAF8FF;
-  --ios-color-bg-grouped-tertiary: #EEE8FF;
+  --ios-color-bg-grouped-primary: #D9EEFF;
+  --ios-color-bg-grouped-secondary: #F0F9FF;
+  --ios-color-bg-grouped-tertiary: #D9EEFF;
 
-  --ios-color-separator: rgba(120, 90, 200, 0.18);
-  --ios-color-separator-opaque: #D4CAE8;
+  --ios-color-separator: rgba(79, 170, 237, 0.20);
+  --ios-color-separator-opaque: #BAE6FD;
 
-  --ios-color-tint: #9580C8;
-  --ios-color-tint-hover: #A693D4;
-  --ios-color-tint-pressed: #7D68B8;
-  --ios-color-tint-soft: rgba(149, 128, 200, 0.14);
-  --ios-color-tint-soft-strong: rgba(149, 128, 200, 0.24);
+  --ios-color-tint: #3FA4E8;
+  --ios-color-tint-hover: #64BBEF;
+  --ios-color-tint-pressed: #2485C8;
+  --ios-color-tint-soft: rgba(63, 164, 232, 0.12);
+  --ios-color-tint-soft-strong: rgba(63, 164, 232, 0.22);
 
-  --ios-color-systemBlue: #93C5FD;
+  --ios-color-tint-gradient: linear-gradient(135deg, #7DD8FA 0%, #4FAAED 45%, #A78BFA 100%);
+  --ios-color-tint-gradient-soft: linear-gradient(135deg, rgba(125,216,250,0.18) 0%, rgba(79,170,237,0.18) 50%, rgba(167,139,250,0.14) 100%);
+
+  --ios-color-systemBlue: #60A5FA;
   --ios-color-systemGreen: #6EE7B7;
   --ios-color-systemRed: #FCA5A5;
   --ios-color-systemOrange: #FDB78A;
@@ -252,13 +259,13 @@
   --ios-color-systemTeal: #7DD3FC;
   --ios-color-systemIndigo: #A78BFA;
 
-  --ios-glass-bg-light-sm: rgba(252, 250, 255, 0.62);
-  --ios-glass-bg-light-md: rgba(250, 247, 255, 0.68);
-  --ios-glass-bg-light-lg: rgba(253, 251, 255, 0.76);
-  --ios-glass-border-light: rgba(200, 180, 255, 0.3);
-  --ios-glass-highlight-light: rgba(255, 255, 255, 0.82);
+  --ios-glass-bg-light-sm: rgba(240, 250, 255, 0.62);
+  --ios-glass-bg-light-md: rgba(236, 248, 255, 0.70);
+  --ios-glass-bg-light-lg: rgba(242, 251, 255, 0.78);
+  --ios-glass-border-light: rgba(125, 211, 252, 0.35);
+  --ios-glass-highlight-light: rgba(255, 255, 255, 0.85);
 
-  --ios-glass-shadow-layer: 0 18px 40px rgba(120, 80, 200, 0.1);
-  --ios-glass-shadow-background: 0 32px 80px rgba(120, 80, 200, 0.07);
-  --ios-glass-shadow-press: 0 4px 14px rgba(120, 80, 200, 0.12);
+  --ios-glass-shadow-layer: 0 18px 40px rgba(63, 164, 232, 0.12);
+  --ios-glass-shadow-background: 0 32px 80px rgba(63, 164, 232, 0.08);
+  --ios-glass-shadow-press: 0 4px 14px rgba(63, 164, 232, 0.14);
 }

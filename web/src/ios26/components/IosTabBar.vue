@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch, nextTick, onMounted } from 'vue'
+import { computed, ref, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import IosIcon from './IosIcon.vue'
 import { IOS_TABS, IOS_ROOT } from '../constants'
@@ -45,7 +45,15 @@ function updateIndicator() {
 }
 
 watch(activeIndex, updateIndicator)
-onMounted(updateIndicator)
+
+onMounted(() => {
+  updateIndicator()
+  window.addEventListener('resize', updateIndicator)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateIndicator)
+})
 
 function go(path: string) {
   if (route.path !== path) router.push(path)
@@ -91,6 +99,20 @@ function go(path: string) {
 
       <!-- Actions (right) -->
       <div class="ios-topnav__actions">
+        <!-- 切换回经典版 -->
+        <router-link
+          to="/"
+          class="ios-topnav__classic-btn"
+          title="切换回经典版"
+        >
+          <IosIcon
+            path="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"
+            :size="15"
+            :stroke="1.8"
+          />
+          <span class="ios-topnav__classic-label">经典版</span>
+        </router-link>
+
         <router-link
           to="/ios26/dashboard"
           class="ios-topnav__action-btn"
@@ -109,18 +131,25 @@ function go(path: string) {
 </template>
 
 <style scoped>
-/* ===== Top Navigation Bar ===== */
+/* ===== Top Navigation Bar — floating centered pill ===== */
 .ios-topnav {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 60;
-  height: var(--ios-topbar-h);
+  height: 64px;
+  width: max-content;
+  min-width: 640px;
+  max-width: calc(100vw - 40px);
+  border-radius: 32px;
   background: var(--ios-glass-bg-light-lg);
-  backdrop-filter: blur(var(--ios-glass-blur-lg)) saturate(var(--ios-glass-saturate));
-  -webkit-backdrop-filter: blur(var(--ios-glass-blur-lg)) saturate(var(--ios-glass-saturate));
-  border-bottom: 0.5px solid var(--ios-color-separator);
+  backdrop-filter: blur(var(--ios-glass-blur-lg)) saturate(2.4) brightness(1.04);
+  -webkit-backdrop-filter: blur(var(--ios-glass-blur-lg)) saturate(2.4) brightness(1.04);
+  border: 0.5px solid var(--ios-glass-border-light);
+  box-shadow:
+    var(--ios-glass-shadow-layer),
+    inset 0 1px 0 rgba(255, 255, 255, 0.80);
 }
 
 /* Top highlight layer */
@@ -128,9 +157,15 @@ function go(path: string) {
   content: '';
   position: absolute;
   inset: 0;
+  border-radius: inherit;
   pointer-events: none;
-  background: linear-gradient(180deg, var(--ios-glass-highlight-light) 0%, transparent 60%);
-  opacity: 0.4;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.88) 0%,
+    rgba(200, 235, 255, 0.20) 35%,
+    transparent 65%
+  );
+  opacity: 0.7;
   z-index: 0;
 }
 
@@ -141,7 +176,7 @@ function go(path: string) {
   align-items: center;
   height: 100%;
   padding: 0 20px;
-  gap: 12px;
+  gap: 14px;
 }
 
 /* Brand */
@@ -161,10 +196,10 @@ function go(path: string) {
 }
 
 .ios-topnav__logo {
-  width: 30px;
-  height: 30px;
-  border-radius: var(--ios-radius-sm);
-  background: var(--ios-color-tint);
+  width: 36px;
+  height: 36px;
+  border-radius: var(--ios-radius-md);
+  background: var(--ios-color-tint-gradient, var(--ios-color-tint));
   color: #fff;
   display: flex;
   align-items: center;
@@ -173,9 +208,9 @@ function go(path: string) {
 }
 
 .ios-topnav__brand-name {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.4px;
   color: var(--ios-color-label-primary);
   white-space: nowrap;
 }
@@ -203,15 +238,17 @@ function go(path: string) {
   top: 4px;
   bottom: 4px;
   left: 0;
-  background: var(--ios-glass-bg-light-md);
-  backdrop-filter: blur(var(--ios-glass-blur-md)) saturate(var(--ios-glass-saturate));
-  -webkit-backdrop-filter: blur(var(--ios-glass-blur-md)) saturate(var(--ios-glass-saturate));
-  border: 0.5px solid var(--ios-glass-border-light);
+  /* 不用 backdrop-filter，改用明确的白色半透明填充，避免嵌套模糊失效 */
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(125, 211, 252, 0.50);
   border-radius: var(--ios-radius-pill);
-  box-shadow: var(--ios-glass-shadow-press);
+  box-shadow:
+    0 2px 12px rgba(63, 164, 232, 0.20),
+    0 1px 4px rgba(63, 164, 232, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
   transition:
     transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
-    width 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+    width   0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
     opacity 0.2s;
   pointer-events: none;
 }
@@ -221,19 +258,19 @@ function go(path: string) {
   z-index: 1;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 7px 14px;
+  gap: 7px;
+  padding: 9px 18px;
   border: none;
   background: transparent;
   color: var(--ios-color-label-secondary);
   cursor: pointer;
   border-radius: var(--ios-radius-pill);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
-  letter-spacing: -0.15px;
+  letter-spacing: -0.2px;
   white-space: nowrap;
   transition: color 0.2s var(--ios-ease-gentle);
-  min-height: 34px;
+  min-height: 42px;
 }
 
 .ios-topnav__tab:hover:not(.is-active) {
@@ -241,8 +278,8 @@ function go(path: string) {
 }
 
 .ios-topnav__tab.is-active {
-  color: var(--ios-color-label-primary);
-  font-weight: 600;
+  color: var(--ios-color-tint);
+  font-weight: 700;
 }
 
 .ios-topnav__tab-label {
@@ -283,8 +320,45 @@ function go(path: string) {
   background: var(--ios-color-tint-soft);
 }
 
-/* Responsive: hide center nav on small screens (mobile bottom bar handles it) */
+/* 经典版切换按钮 */
+.ios-topnav__classic-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border-radius: var(--ios-radius-pill);
+  border: 1px solid var(--ios-color-separator);
+  background: var(--ios-color-fill-quaternary);
+  color: var(--ios-color-label-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.18s var(--ios-ease-stiff),
+    color 0.18s var(--ios-ease-stiff),
+    border-color 0.18s var(--ios-ease-stiff);
+}
+
+.ios-topnav__classic-btn:hover {
+  background: var(--ios-color-fill-secondary);
+  color: var(--ios-color-label-primary);
+  border-color: var(--ios-color-separator-opaque);
+}
+
+/* Responsive: mobile — stretch to near full width */
 @media (max-width: 768px) {
+  .ios-topnav {
+    left: 12px;
+    right: 12px;
+    top: 8px;
+    transform: none;
+    width: auto;
+    min-width: unset;
+    max-width: unset;
+    border-radius: 24px;
+    height: 56px;
+  }
+
   .ios-topnav__nav {
     display: none;
   }
@@ -295,7 +369,17 @@ function go(path: string) {
 
   .ios-topnav__inner {
     justify-content: space-between;
-    padding: 0 16px;
+    padding: 0 14px;
+  }
+
+  .ios-topnav__classic-label {
+    display: none;
+  }
+
+  .ios-topnav__classic-btn {
+    padding: 5px 8px;
+    border: none;
+    background: transparent;
   }
 }
 </style>

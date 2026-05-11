@@ -126,17 +126,6 @@
   }
 }
 
-/* Interactive panel hover state for desktop */
-@media (hover: hover) {
-  .ios26-app .ios-glass--interactive:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.06);
-  }
-
-  .ios26-app .ios-glass--interactive:active {
-    transform: translateY(0);
-  }
-}
 
 /* Press animation only on touch devices */
 @media (hover: none) {
@@ -146,9 +135,55 @@
   }
 }
 
-/* ===== Chip hover (web) ===== */
+/* ===== Chip — macaron glass pill ===== */
+.ios26-app .ios-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  border: 1px solid var(--ios-glass-border-light);
+  background: var(--ios-glass-bg-light-sm);
+  backdrop-filter: blur(var(--ios-glass-blur-sm)) saturate(1.8);
+  -webkit-backdrop-filter: blur(var(--ios-glass-blur-sm)) saturate(1.8);
+  color: var(--ios-color-label-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.1px;
+  white-space: nowrap;
+  cursor: pointer;
+  outline: none;
+  transition:
+    background    0.22s var(--ios-ease-stiff),
+    color         0.22s var(--ios-ease-stiff),
+    border-color  0.22s var(--ios-ease-stiff),
+    box-shadow    0.22s var(--ios-ease-stiff),
+    transform     0.15s var(--ios-ease-snappy);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.ios26-app .ios-chip.is-active {
+  background: var(--ios-color-tint-gradient, var(--ios-color-tint));
+  background-size: 200% 200%;
+  border-color: transparent;
+  color: #fff;
+  font-weight: 600;
+  box-shadow:
+    0 4px 14px rgba(63, 164, 232, 0.32),
+    0 1px 4px  rgba(167, 139, 250, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.30);
+}
+
 @media (hover: hover) {
-  .ios26-app .ios-chip:hover {
-    background: var(--ios-color-fill-tertiary);
+  .ios26-app .ios-chip:hover:not(.is-active) {
+    background: var(--ios-color-fill-secondary);
+    border-color: rgba(125, 211, 252, 0.50);
+    color: var(--ios-color-label-primary);
+    transform: translateY(-1px);
+  }
+
+  .ios26-app .ios-chip.is-active:hover {
+    filter: brightness(1.06) saturate(1.1);
   }
 }

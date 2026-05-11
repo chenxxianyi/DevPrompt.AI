@@ -23,6 +23,7 @@ const generators = [
     icon: 'M3 7.5A1.5 1.5 0 0 1 4.5 6h4.879a1.5 1.5 0 0 1 1.06.44l1.122 1.12A1.5 1.5 0 0 0 12.62 8H19.5A1.5 1.5 0 0 1 21 9.5V18a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18V7.5Z',
     tint: '#A78BFA',
     shadow: 'rgba(167,139,250,0.35)',
+    cardTint: 'purple' as const,
   },
   {
     id: 'cursor-rules',
@@ -31,6 +32,7 @@ const generators = [
     icon: 'M5.636 4.364a9 9 0 0 1 12.728 0 9 9 0 0 1 0 12.728 9 9 0 0 1-12.728 0 9 9 0 0 1 0-12.728ZM12 8.25a.75.75 0 0 1 .75.75v2.25H15a.75.75 0 0 1 0 1.5h-2.25V15a.75.75 0 0 1-1.5 0v-2.25H9a.75.75 0 0 1 0-1.5h2.25V9a.75.75 0 0 1 .75-.75Z',
     tint: '#7DD3FC',
     shadow: 'rgba(125,211,252,0.35)',
+    cardTint: 'teal' as const,
   },
   {
     id: 'claude-code',
@@ -39,6 +41,7 @@ const generators = [
     icon: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2 14 8 20 8',
     tint: '#FDB78A',
     shadow: 'rgba(253,183,138,0.35)',
+    cardTint: 'orange' as const,
   },
   {
     id: 'optimize',
@@ -47,6 +50,7 @@ const generators = [
     icon: 'M6.464 6.464A5 5 0 0 1 10 5.036V3a1 1 0 1 1 2 0v2.036a5 5 0 0 1 3.536 1.428l1.41 1.41-1.414 1.415-1.41-1.41A3 3 0 0 0 10 7.036v2.928l-3.536 3.536a3 3 0 0 0 4.242 4.242l1.41 1.41-1.414 1.415-1.41-1.41A5 5 0 0 1 6.464 6.464Z',
     tint: '#6EE7B7',
     shadow: 'rgba(110,231,183,0.35)',
+    cardTint: 'green' as const,
   },
 ]
 
@@ -143,6 +147,7 @@ function quickGenerate() {
             v-for="g in generators"
             :key="g.id"
             interactive
+            :tint="g.cardTint"
             class="ios-home__card"
             @click="goGenerator(g.id)"
           >
@@ -175,7 +180,7 @@ function quickGenerate() {
             :to="`/ios26/prompts/${t.slug}`"
             class="ios-home__template-link"
           >
-            <IosGlassPanel interactive class="ios-home__template">
+            <IosGlassPanel interactive tint="blue" class="ios-home__template">
               <div class="ios-text-headline">{{ t.title }}</div>
               <p class="ios-text-subheadline ios-home__template-desc">{{ t.description }}</p>
               <div class="ios-home__tags">
@@ -203,9 +208,10 @@ function quickGenerate() {
         </header>
         <div class="ios-home__caps">
           <IosGlassPanel
-            v-for="cap in capabilities"
+            v-for="(cap, i) in capabilities"
             :key="cap.title"
             size="sm"
+            :tint="(['purple','teal','pink','green'] as const)[i]"
             class="ios-home__cap"
           >
             <span class="ios-home__cap-icon" :style="{ color: cap.color, background: cap.color + '22' }">

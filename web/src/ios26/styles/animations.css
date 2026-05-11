@@ -1,0 +1,111 @@
+/* ============================================================
+ * iOS 26 — Animations
+ * Spring-like cubic-bezier，禁止使用 linear easing
+ * ============================================================ */
+
+@keyframes ios-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ios-slide-up-in {
+  from {
+    transform: translateY(16px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes ios-sheet-present {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes ios-sheet-dismiss {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes ios-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.6;
+  }
+}
+
+@keyframes ios-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ios26-app .ios-anim-fade {
+  animation: ios-fade-in 0.3s var(--ios-ease-gentle);
+}
+
+.ios26-app .ios-anim-slide {
+  animation: ios-slide-up-in 0.45s var(--ios-ease-gentle);
+}
+
+/* 按压 / 点击反馈：spring snappy */
+.ios26-app .ios-press {
+  transition: transform 0.18s var(--ios-ease-snappy),
+    background 0.18s var(--ios-ease-stiff),
+    opacity 0.18s var(--ios-ease-stiff);
+}
+.ios26-app .ios-press:active {
+  transform: scale(0.97);
+}
+
+.ios26-app .ios-press-soft {
+  transition: transform 0.25s var(--ios-ease-gentle),
+    background 0.2s var(--ios-ease-stiff);
+}
+.ios26-app .ios-press-soft:active {
+  transform: scale(0.99);
+}
+
+.ios26-app .ios-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--ios-color-fill-tertiary);
+  border-top-color: var(--ios-color-tint);
+  border-radius: 50%;
+  animation: ios-spin 0.7s var(--ios-ease-stiff) infinite;
+  display: inline-block;
+}
+
+/* Route transition (用于 IosAppShell 内部 RouterView) */
+.ios-page-enter-active,
+.ios-page-leave-active {
+  transition: opacity 0.25s var(--ios-ease-gentle),
+    transform 0.25s var(--ios-ease-gentle);
+}
+.ios-page-enter-from {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.ios-page-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+}

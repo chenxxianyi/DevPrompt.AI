@@ -1,0 +1,264 @@
+/* ============================================================
+ * iOS 26 / Liquid Glass — Design Tokens
+ * 所有变量均挂在 .ios26-app 作用域下，避免污染旧版页面。
+ * 仅使用 --ios-* 前缀。
+ * ============================================================ */
+
+.ios26-app {
+  /* ===== Macaron Light Mode ===== */
+  --ios-color-label-primary: rgba(30, 20, 50, 1);
+  --ios-color-label-secondary: rgba(60, 50, 90, 0.58);
+  --ios-color-label-tertiary: rgba(60, 50, 90, 0.32);
+  --ios-color-label-quaternary: rgba(60, 50, 90, 0.16);
+
+  --ios-color-fill-primary: rgba(120, 100, 180, 0.18);
+  --ios-color-fill-secondary: rgba(120, 100, 180, 0.13);
+  --ios-color-fill-tertiary: rgba(118, 100, 180, 0.09);
+  --ios-color-fill-quaternary: rgba(116, 100, 180, 0.06);
+
+  --ios-color-bg-primary: #FAF8FF;
+  --ios-color-bg-secondary: #F3EEFF;
+  --ios-color-bg-tertiary: #FAF8FF;
+
+  --ios-color-bg-grouped-primary: #EEE8FF;
+  --ios-color-bg-grouped-secondary: #FAF8FF;
+  --ios-color-bg-grouped-tertiary: #EEE8FF;
+
+  --ios-color-separator: rgba(120, 90, 200, 0.18);
+  --ios-color-separator-opaque: #D4CAE8;
+
+  /* Macaron tint — Soft Lavender */
+  --ios-color-tint: #9580C8;
+  --ios-color-tint-hover: #A693D4;
+  --ios-color-tint-pressed: #7D68B8;
+  --ios-color-tint-soft: rgba(149, 128, 200, 0.14);
+  --ios-color-tint-soft-strong: rgba(149, 128, 200, 0.24);
+
+  /* Macaron system colors — pastel */
+  --ios-color-systemBlue: #93C5FD;
+  --ios-color-systemGreen: #6EE7B7;
+  --ios-color-systemRed: #FCA5A5;
+  --ios-color-systemOrange: #FDB78A;
+  --ios-color-systemYellow: #FDE68A;
+  --ios-color-systemPink: #F9A8D4;
+  --ios-color-systemTeal: #7DD3FC;
+  --ios-color-systemIndigo: #A78BFA;
+
+  /* ===== Spacing — 8pt grid ===== */
+  --ios-space-1: 4px;
+  --ios-space-2: 8px;
+  --ios-space-3: 12px;
+  --ios-space-4: 16px;
+  --ios-space-5: 20px;
+  --ios-space-6: 24px;
+  --ios-space-8: 32px;
+  --ios-space-10: 40px;
+  --ios-space-12: 48px;
+  --ios-space-16: 64px;
+
+  /* ===== Radius ===== */
+  --ios-radius-xs: 4px;
+  --ios-radius-sm: 8px;
+  --ios-radius-md: 10px;
+  --ios-radius-lg: 12px;
+  --ios-radius-xl: 16px;
+  --ios-radius-xxl: 20px;
+  --ios-radius-button: 12px;
+  --ios-radius-sheet: 34px;
+  --ios-radius-pill: 9999px;
+
+  /* ===== Touch & Layout ===== */
+  --ios-touch-min: 44px;
+  --ios-navbar-h: 44px;
+  --ios-navbar-large-h: 96px;
+  --ios-tabbar-h: 49px;
+  --ios-tabbar-h-safe: 83px;
+  --ios-page-padding: 16px;
+  --ios-content-max: 1100px;
+
+  /* ===== Web / Desktop Layout ===== */
+  --ios-sidebar-w: 220px;
+  --ios-sidebar-w-collapsed: 64px;
+  --ios-topbar-h: 60px;
+  --ios-web-page-padding: 32px;
+  --ios-content-max-web: 1280px;
+
+  /* ===== Liquid Glass — Blur & Shadow ===== */
+  --ios-glass-blur-sm: 7px;
+  --ios-glass-blur-md: 12px;
+  --ios-glass-blur-lg: 14px;
+  --ios-glass-saturate: 1.8;
+
+  /* Macaron glass — lavender-tinted */
+  --ios-glass-bg-light-sm: rgba(252, 250, 255, 0.62);
+  --ios-glass-bg-light-md: rgba(250, 247, 255, 0.68);
+  --ios-glass-bg-light-lg: rgba(253, 251, 255, 0.76);
+  --ios-glass-border-light: rgba(200, 180, 255, 0.3);
+  --ios-glass-highlight-light: rgba(255, 255, 255, 0.82);
+
+  --ios-glass-shadow-layer: 0 18px 40px rgba(120, 80, 200, 0.1);
+  --ios-glass-shadow-background: 0 32px 80px rgba(120, 80, 200, 0.07);
+  --ios-glass-shadow-press: 0 4px 14px rgba(120, 80, 200, 0.12);
+
+  /* ===== Animation ===== */
+  --ios-duration-tab: 0.3s;
+  --ios-duration-sheet-present: 0.5s;
+  --ios-duration-sheet-dismiss: 0.3s;
+  --ios-duration-alert: 0.2s;
+  --ios-duration-context-menu: 0.25s;
+  --ios-duration-tab-indicator: 0.45s;
+
+  --ios-ease-snappy: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ios-ease-bouncy: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ios-ease-gentle: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ios-ease-stiff: cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* ===== Dark Mode ===== */
+@media (prefers-color-scheme: dark) {
+  .ios26-app {
+    --ios-color-label-primary: rgba(255, 255, 255, 1);
+    --ios-color-label-secondary: rgba(235, 235, 245, 0.6);
+    --ios-color-label-tertiary: rgba(235, 235, 245, 0.3);
+    --ios-color-label-quaternary: rgba(235, 235, 245, 0.18);
+
+    --ios-color-fill-primary: rgba(120, 120, 128, 0.36);
+    --ios-color-fill-secondary: rgba(120, 120, 128, 0.32);
+    --ios-color-fill-tertiary: rgba(118, 118, 128, 0.24);
+    --ios-color-fill-quaternary: rgba(118, 118, 128, 0.18);
+
+    --ios-color-bg-primary: #000000;
+    --ios-color-bg-secondary: #1c1c1e;
+    --ios-color-bg-tertiary: #2c2c2e;
+
+    --ios-color-bg-grouped-primary: #000000;
+    --ios-color-bg-grouped-secondary: #1c1c1e;
+    --ios-color-bg-grouped-tertiary: #2c2c2e;
+
+    --ios-color-separator: rgba(84, 84, 88, 0.65);
+    --ios-color-separator-opaque: #38383a;
+
+    /* Macaron dark tint */
+    --ios-color-tint: #B09EE0;
+    --ios-color-tint-hover: #C2B3E8;
+    --ios-color-tint-pressed: #9A88D4;
+    --ios-color-tint-soft: rgba(176, 158, 224, 0.2);
+    --ios-color-tint-soft-strong: rgba(176, 158, 224, 0.3);
+
+    --ios-color-systemBlue: #6AADFF;
+    --ios-color-systemGreen: #4ADB9C;
+    --ios-color-systemRed: #FF8FAB;
+    --ios-color-systemOrange: #FFB07A;
+    --ios-color-systemYellow: #FFD96A;
+    --ios-color-systemPink: #FF85C0;
+    --ios-color-systemTeal: #5AC8FA;
+    --ios-color-systemIndigo: #BBA8FF;
+
+    --ios-glass-bg-light-sm: rgba(28, 24, 40, 0.6);
+    --ios-glass-bg-light-md: rgba(20, 16, 36, 0.62);
+    --ios-glass-bg-light-lg: rgba(24, 20, 42, 0.7);
+    --ios-glass-border-light: rgba(160, 140, 255, 0.12);
+    --ios-glass-highlight-light: rgba(200, 180, 255, 0.15);
+
+    --ios-glass-shadow-layer: 0 18px 40px rgba(80, 40, 160, 0.45);
+    --ios-glass-shadow-background: 0 32px 80px rgba(80, 40, 160, 0.35);
+    --ios-glass-shadow-press: 0 4px 12px rgba(80, 40, 160, 0.4);
+  }
+}
+
+/* 手动暗色模式覆盖：data-theme="dark" */
+.ios26-app[data-theme='dark'] {
+  --ios-color-label-primary: rgba(255, 255, 255, 1);
+  --ios-color-label-secondary: rgba(235, 235, 245, 0.6);
+  --ios-color-label-tertiary: rgba(235, 235, 245, 0.3);
+  --ios-color-label-quaternary: rgba(235, 235, 245, 0.18);
+
+  --ios-color-fill-primary: rgba(120, 120, 128, 0.36);
+  --ios-color-fill-secondary: rgba(120, 120, 128, 0.32);
+  --ios-color-fill-tertiary: rgba(118, 118, 128, 0.24);
+  --ios-color-fill-quaternary: rgba(118, 118, 128, 0.18);
+
+  --ios-color-bg-primary: #000000;
+  --ios-color-bg-secondary: #1c1c1e;
+  --ios-color-bg-tertiary: #2c2c2e;
+
+  --ios-color-bg-grouped-primary: #000000;
+  --ios-color-bg-grouped-secondary: #1c1c1e;
+  --ios-color-bg-grouped-tertiary: #2c2c2e;
+
+  --ios-color-separator: rgba(84, 84, 88, 0.65);
+  --ios-color-separator-opaque: #38383a;
+
+  --ios-color-tint: #5e5ce6;
+  --ios-color-tint-hover: #7672ec;
+  --ios-color-tint-pressed: #4844c0;
+  --ios-color-tint-soft: rgba(94, 92, 230, 0.18);
+  --ios-color-tint-soft-strong: rgba(94, 92, 230, 0.28);
+
+  --ios-color-systemBlue: #0a84ff;
+  --ios-color-systemGreen: #30d158;
+  --ios-color-systemRed: #ff453a;
+  --ios-color-systemOrange: #ff9f0a;
+  --ios-color-systemYellow: #ffd60a;
+  --ios-color-systemPink: #ff375f;
+  --ios-color-systemTeal: #64d2ff;
+  --ios-color-systemIndigo: #5e5ce6;
+
+  --ios-glass-bg-light-sm: rgba(28, 28, 30, 0.55);
+  --ios-glass-bg-light-md: rgba(0, 0, 0, 0.5);
+  --ios-glass-bg-light-lg: rgba(0, 0, 0, 0.65);
+  --ios-glass-border-light: rgba(255, 255, 255, 0.08);
+  --ios-glass-highlight-light: rgba(255, 255, 255, 0.12);
+
+  --ios-glass-shadow-layer: 0 18px 40px rgba(0, 0, 0, 0.5);
+  --ios-glass-shadow-background: 0 32px 80px rgba(0, 0, 0, 0.4);
+  --ios-glass-shadow-press: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.ios26-app[data-theme='light'] {
+  --ios-color-label-primary: rgba(0, 0, 0, 1);
+  --ios-color-label-secondary: rgba(60, 60, 67, 0.6);
+  --ios-color-label-tertiary: rgba(60, 60, 67, 0.3);
+  --ios-color-label-quaternary: rgba(60, 60, 67, 0.18);
+
+  --ios-color-fill-primary: rgba(120, 100, 180, 0.18);
+  --ios-color-fill-secondary: rgba(120, 100, 180, 0.13);
+  --ios-color-fill-tertiary: rgba(118, 100, 180, 0.09);
+  --ios-color-fill-quaternary: rgba(116, 100, 180, 0.06);
+
+  --ios-color-bg-primary: #FAF8FF;
+  --ios-color-bg-secondary: #F3EEFF;
+  --ios-color-bg-tertiary: #FAF8FF;
+
+  --ios-color-bg-grouped-primary: #EEE8FF;
+  --ios-color-bg-grouped-secondary: #FAF8FF;
+  --ios-color-bg-grouped-tertiary: #EEE8FF;
+
+  --ios-color-separator: rgba(120, 90, 200, 0.18);
+  --ios-color-separator-opaque: #D4CAE8;
+
+  --ios-color-tint: #9580C8;
+  --ios-color-tint-hover: #A693D4;
+  --ios-color-tint-pressed: #7D68B8;
+  --ios-color-tint-soft: rgba(149, 128, 200, 0.14);
+  --ios-color-tint-soft-strong: rgba(149, 128, 200, 0.24);
+
+  --ios-color-systemBlue: #93C5FD;
+  --ios-color-systemGreen: #6EE7B7;
+  --ios-color-systemRed: #FCA5A5;
+  --ios-color-systemOrange: #FDB78A;
+  --ios-color-systemYellow: #FDE68A;
+  --ios-color-systemPink: #F9A8D4;
+  --ios-color-systemTeal: #7DD3FC;
+  --ios-color-systemIndigo: #A78BFA;
+
+  --ios-glass-bg-light-sm: rgba(252, 250, 255, 0.62);
+  --ios-glass-bg-light-md: rgba(250, 247, 255, 0.68);
+  --ios-glass-bg-light-lg: rgba(253, 251, 255, 0.76);
+  --ios-glass-border-light: rgba(200, 180, 255, 0.3);
+  --ios-glass-highlight-light: rgba(255, 255, 255, 0.82);
+
+  --ios-glass-shadow-layer: 0 18px 40px rgba(120, 80, 200, 0.1);
+  --ios-glass-shadow-background: 0 32px 80px rgba(120, 80, 200, 0.07);
+  --ios-glass-shadow-press: 0 4px 14px rgba(120, 80, 200, 0.12);
+}

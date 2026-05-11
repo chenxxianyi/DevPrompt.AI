@@ -1,0 +1,154 @@
+/* ============================================================
+ * iOS 26 / Liquid Glass — Style Entry
+ * 仅作用于 .ios26-app 子树，不影响旧版样式。
+ * ============================================================ */
+
+@import './tokens.css';
+@import './typography.css';
+@import './materials.css';
+@import './animations.css';
+
+.ios26-app {
+  min-height: 100dvh;
+  background: var(--ios-color-bg-grouped-primary);
+  color: var(--ios-color-label-primary);
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  isolation: isolate;
+}
+
+/* 系统级链接：覆盖旧版的 a:hover 之类的全局副作用 */
+.ios26-app a {
+  color: var(--ios-color-tint);
+  text-decoration: none;
+}
+
+.ios26-app a:hover {
+  color: var(--ios-color-tint-hover);
+}
+
+/* iOS 风格列表分隔线 */
+.ios26-app .ios-list {
+  background: var(--ios-color-bg-grouped-secondary);
+  border-radius: var(--ios-radius-lg);
+  overflow: hidden;
+}
+
+.ios26-app .ios-list > * + * {
+  border-top: 0.5px solid var(--ios-color-separator);
+}
+
+/* form input 默认重置 */
+.ios26-app input,
+.ios26-app textarea,
+.ios26-app select,
+.ios26-app button {
+  font-family: inherit;
+  color: inherit;
+}
+
+.ios26-app .ios-input {
+  width: 100%;
+  font-size: 17px;
+  line-height: 22px;
+  letter-spacing: -0.43px;
+  padding: 12px 14px;
+  border-radius: var(--ios-radius-md);
+  background: var(--ios-color-fill-quaternary);
+  border: 1px solid transparent;
+  color: var(--ios-color-label-primary);
+  outline: none;
+  transition: border-color 0.2s var(--ios-ease-stiff),
+    background 0.2s var(--ios-ease-stiff),
+    box-shadow 0.2s var(--ios-ease-stiff);
+}
+
+.ios26-app .ios-input::placeholder {
+  color: var(--ios-color-label-tertiary);
+}
+
+.ios26-app .ios-input:focus {
+  border-color: var(--ios-color-tint);
+  box-shadow: 0 0 0 4px var(--ios-color-tint-soft);
+  background: var(--ios-color-bg-primary);
+}
+
+.ios26-app textarea.ios-input {
+  resize: vertical;
+  min-height: 96px;
+  line-height: 1.5;
+}
+
+.ios26-app select.ios-input {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%238E8E93' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+/* Code block reset within iOS scope */
+.ios26-app pre,
+.ios26-app code {
+  font-family: 'SF Mono', ui-monospace, SFMono-Regular, 'JetBrains Mono', Menlo,
+    Consolas, monospace;
+}
+
+/* utility: hide scrollbar but allow scroll */
+.ios26-app .ios-scroll-x {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.ios26-app .ios-scroll-x::-webkit-scrollbar {
+  display: none;
+}
+
+/* Disable selection on chrome elements */
+.ios26-app .ios-no-select {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ===== Web / Desktop Layout Helpers ===== */
+
+/* Standard page container — responsive padding */
+.ios26-app .ios-page {
+  max-width: var(--ios-content-max-web);
+  margin: 0 auto;
+  padding: 24px var(--ios-web-page-padding) 48px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .ios26-app .ios-page {
+    padding: 12px var(--ios-page-padding) 24px;
+  }
+}
+
+/* Interactive panel hover state for desktop */
+@media (hover: hover) {
+  .ios26-app .ios-glass--interactive:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  .ios26-app .ios-glass--interactive:active {
+    transform: translateY(0);
+  }
+}
+
+/* Press animation only on touch devices */
+@media (hover: none) {
+  .ios26-app .ios-press:active {
+    transform: scale(0.97);
+    opacity: 0.85;
+  }
+}
+
+/* ===== Chip hover (web) ===== */
+@media (hover: hover) {
+  .ios26-app .ios-chip:hover {
+    background: var(--ios-color-fill-tertiary);
+  }
+}

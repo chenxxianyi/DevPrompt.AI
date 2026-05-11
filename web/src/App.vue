@@ -1,11 +1,17 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { useAuthStore } from '@/store/auth'
 import NavBar from '@/components/NavBar.vue'
 import AppFooter from '@/components/AppFooter.vue'
 import ToastContainer from '@/components/ToastContainer.vue'
 
 const auth = useAuthStore()
+const route = useRoute()
+
+// iOS26 路由组自带 NavBar / TabBar / Toast，需要隐藏旧版外壳
+const isIos26 = computed(() => route.path.startsWith('/ios26'))
+
 onMounted(() => {
   auth.initAuth()
   if (auth.isLoggedIn) {
@@ -15,16 +21,24 @@ onMounted(() => {
 </script>
 
 <template>
-  <NavBar />
-  <main class="pt-16">
-    <router-view v-slot="{ Component }">
-      <transition name="page" mode="out-in">
-        <component :is="Component" />
-      </transition>
-    </router-view>
-  </main>
-  <AppFooter />
-  <ToastContainer />
+  <!-- iOS26: 由 IosAppShell 渲染独立外壳 -->
+  <template v-if="isIos26">
+    <router-view />
+  </template>
+
+  <!-- 旧版：保持原有结构和动效 -->
+  <template v-else>
+    <NavBar />
+    <main class="pt-16">
+      <router-view v-slot="{ Component }">
+        <transition name="page" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
+    </main>
+    <AppFooter />
+    <ToastContainer />
+  </template>
 </template>
 
 <style scoped>

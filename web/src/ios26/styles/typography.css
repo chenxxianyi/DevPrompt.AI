@@ -1,0 +1,115 @@
+/* ============================================================
+ * iOS 26 — Typography
+ * Apple SF Pro scale, 中文回退到 Noto Sans SC
+ * ============================================================ */
+
+.ios26-app {
+  font-family: 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont,
+    'Helvetica Neue', 'Noto Sans SC', system-ui, sans-serif;
+  font-feature-settings: 'cv11', 'ss01', 'kern';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ios26-app .ios-text-large-title {
+  font-size: 34px;
+  line-height: 41px;
+  letter-spacing: 0.4px;
+  font-weight: 700;
+}
+
+.ios26-app .ios-text-title-1 {
+  font-size: 28px;
+  line-height: 34px;
+  letter-spacing: 0.38px;
+  font-weight: 700;
+}
+
+.ios26-app .ios-text-title-2 {
+  font-size: 22px;
+  line-height: 28px;
+  letter-spacing: -0.26px;
+  font-weight: 700;
+}
+
+.ios26-app .ios-text-title-3 {
+  font-size: 20px;
+  line-height: 25px;
+  letter-spacing: -0.45px;
+  font-weight: 600;
+}
+
+.ios26-app .ios-text-headline {
+  font-size: 17px;
+  line-height: 22px;
+  letter-spacing: -0.43px;
+  font-weight: 600;
+}
+
+.ios26-app .ios-text-body {
+  font-size: 17px;
+  line-height: 22px;
+  letter-spacing: -0.43px;
+  font-weight: 400;
+}
+
+.ios26-app .ios-text-body-emph {
+  font-size: 17px;
+  line-height: 22px;
+  letter-spacing: -0.43px;
+  font-weight: 600;
+}
+
+.ios26-app .ios-text-callout {
+  font-size: 16px;
+  line-height: 21px;
+  letter-spacing: -0.31px;
+  font-weight: 400;
+}
+
+.ios26-app .ios-text-subheadline {
+  font-size: 15px;
+  line-height: 20px;
+  letter-spacing: -0.23px;
+  font-weight: 400;
+}
+
+.ios26-app .ios-text-subheadline-emph {
+  font-size: 15px;
+  line-height: 20px;
+  letter-spacing: -0.23px;
+  font-weight: 600;
+}
+
+.ios26-app .ios-text-footnote {
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: -0.08px;
+  font-weight: 400;
+}
+
+.ios26-app .ios-text-footnote-emph {
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: -0.08px;
+  font-weight: 600;
+}
+
+.ios26-app .ios-text-caption-1 {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0px;
+  font-weight: 400;
+}
+
+.ios26-app .ios-text-caption-2 {
+  font-size: 11px;
+  line-height: 13px;
+  letter-spacing: 0.06px;
+  font-weight: 600;
+}
+
+.ios26-app .ios-mono {
+  font-family: 'SF Mono', ui-monospace, SFMono-Regular, 'JetBrains Mono', Menlo,
+    Consolas, 'Roboto Mono', monospace;
+}

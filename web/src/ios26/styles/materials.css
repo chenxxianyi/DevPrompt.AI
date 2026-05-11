@@ -1,0 +1,103 @@
+/* ============================================================
+ * iOS 26 — Liquid Glass Materials
+ * ============================================================ */
+
+/* Glass 容器基类 */
+.ios26-app .ios-glass {
+  position: relative;
+  background: var(--ios-glass-bg-light-md);
+  backdrop-filter: blur(var(--ios-glass-blur-md)) saturate(var(--ios-glass-saturate));
+  -webkit-backdrop-filter: blur(var(--ios-glass-blur-md))
+    saturate(var(--ios-glass-saturate));
+  border: 1px solid var(--ios-glass-border-light);
+  border-radius: var(--ios-radius-xl);
+  box-shadow: var(--ios-glass-shadow-layer);
+  isolation: isolate;
+}
+
+/* 顶部高光 — macaron enhanced */
+.ios26-app .ios-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    145deg,
+    var(--ios-glass-highlight-light) 0%,
+    rgba(220, 210, 255, 0.15) 40%,
+    transparent 65%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  opacity: 0.65;
+  z-index: 0;
+}
+
+.ios26-app .ios-glass > * {
+  position: relative;
+  z-index: 1;
+}
+
+.ios26-app .ios-glass-sm {
+  backdrop-filter: blur(var(--ios-glass-blur-sm)) saturate(1.5);
+  -webkit-backdrop-filter: blur(var(--ios-glass-blur-sm)) saturate(1.5);
+  background: var(--ios-glass-bg-light-sm);
+  border-radius: var(--ios-radius-lg);
+}
+
+.ios26-app .ios-glass-lg {
+  backdrop-filter: blur(var(--ios-glass-blur-lg)) saturate(var(--ios-glass-saturate));
+  -webkit-backdrop-filter: blur(var(--ios-glass-blur-lg))
+    saturate(var(--ios-glass-saturate));
+  background: var(--ios-glass-bg-light-lg);
+  border-radius: var(--ios-radius-xxl);
+  box-shadow: var(--ios-glass-shadow-background);
+}
+
+/* 实色 grouped surface（非玻璃） */
+.ios26-app .ios-surface {
+  background: var(--ios-color-bg-grouped-secondary);
+  border-radius: var(--ios-radius-lg);
+}
+
+/* Hairline separator */
+.ios26-app .ios-hairline {
+  background: var(--ios-color-separator);
+  height: 1px;
+  width: 100%;
+  border: 0;
+}
+
+/* Macaron Aurora — pastel multi-color halo */
+.ios26-app .ios-aurora {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 55% at 5% 0%,   rgba(167, 139, 250, 0.42), transparent 52%),
+    radial-gradient(ellipse 55% 50% at 98% 8%,  rgba(110, 231, 183, 0.32), transparent 52%),
+    radial-gradient(ellipse 60% 50% at 88% 100%,rgba(249, 168, 212, 0.36), transparent 52%),
+    radial-gradient(ellipse 65% 55% at 8%  95%, rgba(147, 197, 253, 0.3),  transparent 52%),
+    radial-gradient(ellipse 40% 35% at 52% 50%, rgba(253, 230, 138, 0.18), transparent 50%);
+}
+
+@media (prefers-color-scheme: dark) {
+  .ios26-app .ios-aurora {
+    background:
+      radial-gradient(ellipse 70% 55% at 5%  0%,  rgba(140, 100, 255, 0.3),  transparent 52%),
+      radial-gradient(ellipse 55% 50% at 98% 8%,  rgba(74,  222, 128, 0.2),  transparent 52%),
+      radial-gradient(ellipse 60% 50% at 88% 100%,rgba(244, 114, 182, 0.22), transparent 52%),
+      radial-gradient(ellipse 65% 55% at 8%  95%, rgba(96,  165, 250, 0.2),  transparent 52%),
+      radial-gradient(ellipse 40% 35% at 52% 50%, rgba(250, 204, 21,  0.1),  transparent 50%);
+  }
+}
+
+.ios26-app[data-theme='dark'] .ios-aurora {
+  background:
+    radial-gradient(ellipse 70% 55% at 5%  0%,  rgba(140, 100, 255, 0.3),  transparent 52%),
+    radial-gradient(ellipse 55% 50% at 98% 8%,  rgba(74,  222, 128, 0.2),  transparent 52%),
+    radial-gradient(ellipse 60% 50% at 88% 100%,rgba(244, 114, 182, 0.22), transparent 52%),
+    radial-gradient(ellipse 65% 55% at 8%  95%, rgba(96,  165, 250, 0.2),  transparent 52%),
+    radial-gradient(ellipse 40% 35% at 52% 50%, rgba(250, 204, 21,  0.1),  transparent 50%);
+}

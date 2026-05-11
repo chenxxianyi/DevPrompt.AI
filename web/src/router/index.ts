@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { ios26Routes } from '@/ios26/router'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -11,6 +12,8 @@ const router = createRouter({
     { path: '/dashboard', name: 'dashboard', component: () => import('@/views/DashboardView.vue') },
     { path: '/login', name: 'login', component: () => import('@/views/LoginView.vue') },
     { path: '/pricing', name: 'pricing', component: () => import('@/views/PricingView.vue') },
+    // iOS 26 / Liquid Glass 新版前端入口
+    ...ios26Routes,
   ],
   scrollBehavior() {
     return { top: 0 }

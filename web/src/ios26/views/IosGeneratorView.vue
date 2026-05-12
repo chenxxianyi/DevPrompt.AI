@@ -369,7 +369,7 @@ function exportMarkdown() {
             </div>
 
             <!-- Single result -->
-            <IosGlassPanel v-else size="md">
+            <IosGlassPanel v-else size="md" class="ios-gen__result-panel">
               <div v-if="gen.activeTab === 'cursor-rules'" class="ios-gen__hint">
                 <IosIcon path="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6" :size="13" :stroke="2" />
                 建议保存为 <code class="ios-gen__code">.cursorrules</code> 放在项目根目录
@@ -408,7 +408,7 @@ function exportMarkdown() {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 20px;
-  align-items: start;
+  align-items: stretch;
 }
 
 .ios-gen__left {
@@ -418,21 +418,20 @@ function exportMarkdown() {
 }
 
 .ios-gen__right {
-  position: sticky;
-  top: calc(var(--ios-topbar-h) * 2 + 12px);
   display: flex;
   flex-direction: column;
   gap: 12px;
+  min-height: 0;
 }
 
 /* Empty / loading state in right column */
 .ios-gen__right-empty {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 12px;
-  min-height: 280px;
   border-radius: var(--ios-radius-xl);
   border: 1.5px dashed var(--ios-color-separator);
   color: var(--ios-color-label-tertiary);
@@ -451,10 +450,7 @@ function exportMarkdown() {
 @media (max-width: 900px) {
   .ios-gen__workspace {
     grid-template-columns: 1fr;
-  }
-
-  .ios-gen__right {
-    position: static;
+    align-items: start;
   }
 
   .ios-gen__right-empty {
@@ -538,7 +534,19 @@ function exportMarkdown() {
 }
 
 .ios-gen__result {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
   margin-top: 8px;
+}
+
+.ios-gen__result-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .ios-gen__result-head {
@@ -625,14 +633,15 @@ function exportMarkdown() {
 }
 
 .ios-gen__result-pre {
+  flex: 1;
   margin: 0;
   font-size: 13px;
   line-height: 1.65;
   white-space: pre-wrap;
   word-break: break-word;
   color: var(--ios-color-label-primary);
-  max-height: 600px;
   overflow-y: auto;
+  min-height: 0;
 }
 
 .ios-gen__error {

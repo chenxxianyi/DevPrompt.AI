@@ -118,3 +118,23 @@ func (h *PromptHandler) ToggleFavorite(c *gin.Context) {
 
 	response.Success(c, gin.H{"favorited": favorited})
 }
+
+// Favorites GET /api/prompts/favorites
+func (h *PromptHandler) Favorites(c *gin.Context) {
+	userID, ok := middleware.GetUserID(c)
+	if !ok {
+		response.Unauthorized(c, "璇峰厛鐧诲綍")
+		return
+	}
+
+	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
+	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", "20"))
+
+	result, err := h.promptService.ListFavorites(userID, page, pageSize)
+	if err != nil {
+		response.InternalError(c, err.Error())
+		return
+	}
+
+	response.Success(c, result)
+}

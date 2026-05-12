@@ -29,14 +29,14 @@ func main() {
 	}
 
 	// 2. 安全检查：生产环境使用默认 JWT 密钥则拒绝启动
-		weakSecrets := map[string]bool{
-			"": true,
-			"change_me": true,
-			"change_me_to_a_secure_random_string": true,
-		}
-		if cfg.App.Env == "production" && weakSecrets[cfg.JWT.Secret] {
-			log.Fatalf("安全错误: 生产环境必须显式设置强随机 JWT_SECRET")
-		}
+	weakSecrets := map[string]bool{
+		"":                                    true,
+		"change_me":                           true,
+		"change_me_to_a_secure_random_string": true,
+	}
+	if cfg.App.Env == "production" && weakSecrets[cfg.JWT.Secret] {
+		log.Fatalf("安全错误: 生产环境必须显式设置强随机 JWT_SECRET")
+	}
 	// 3. 连接 MySQL（先确保数据库存在）
 	dsnNoDB := fmt.Sprintf("%s:%s@tcp(%s:%d)/?charset=%s&parseTime=True&loc=Local",
 		cfg.MySQL.User, cfg.MySQL.Password, cfg.MySQL.Host, cfg.MySQL.Port,
@@ -111,7 +111,7 @@ func main() {
 	planRepo := repository.NewMembershipPlanRepository(db)
 	orderRepo := repository.NewOrderRepository(db)
 	projectTypeRepo := repository.NewProjectTypeRepository(db)
-trialRequestRepo := repository.NewTrialRequestRepository(db)
+	trialRequestRepo := repository.NewTrialRequestRepository(db)
 
 	// Services
 	authService := service.NewAuthService(userRepo, cfg.JWT.Secret, cfg.JWT.ExpireHours)
@@ -152,7 +152,7 @@ trialRequestRepo := repository.NewTrialRequestRepository(db)
 	generatorHandler := api.NewGeneratorHandler(genService)
 	membershipHandler := api.NewMembershipHandler(membershipSvc)
 	userHandler := api.NewUserHandler(genService)
-trialRequestHandler := api.NewTrialRequestHandler(trialRequestRepo, planRepo)
+	trialRequestHandler := api.NewTrialRequestHandler(trialRequestRepo, planRepo, userRepo)
 
 	// Admin handlers
 	userAdminHandler := admin.NewUserAdminHandler(userRepo)
@@ -200,6 +200,7 @@ trialRequestHandler := api.NewTrialRequestHandler(trialRequestRepo, planRepo)
 		// Prompts 互动
 		authGroup.POST("/prompts/:id/like", promptHandler.ToggleLike)
 		authGroup.POST("/prompts/:id/favorite", promptHandler.ToggleFavorite)
+		authGroup.GET("/prompts/favorites", promptHandler.Favorites)
 
 		// Generator
 		authGroup.POST("/generator/project", generatorHandler.Project)
@@ -210,8 +211,8 @@ trialRequestHandler := api.NewTrialRequestHandler(trialRequestRepo, planRepo)
 
 		// User
 		authGroup.GET("/user/generate-stats", userHandler.GenerateStats)
-			// Trial Requests
-			authGroup.POST("/trial-requests", trialRequestHandler.Create)
+		// Trial Requests
+		authGroup.POST("/trial-requests", trialRequestHandler.Create)
 	}
 
 	// ============ 管理后台路由 ============
@@ -219,9 +220,9 @@ trialRequestHandler := api.NewTrialRequestHandler(trialRequestRepo, planRepo)
 	{
 		// Dashboard
 		adminGroup.GET("/dashboard", dashboardHandler.Overview)
-			// Trial Requests
-			adminGroup.GET("/trial-requests", trialRequestHandler.AdminList)
-			adminGroup.PUT("/trial-requests/:id", trialRequestHandler.AdminUpdateStatus)
+		// Trial Requests
+		adminGroup.GET("/trial-requests", trialRequestHandler.AdminList)
+		adminGroup.PUT("/trial-requests/:id", trialRequestHandler.AdminUpdateStatus)
 
 		// Users
 		adminGroup.GET("/users", userAdminHandler.List)
@@ -258,8 +259,8 @@ trialRequestHandler := api.NewTrialRequestHandler(trialRequestRepo, planRepo)
 		// Project Types CRUD
 		adminGroup.GET("/project-types", projectTypeAdminHandler.List)
 		adminGroup.POST("/project-types", projectTypeAdminHandler.Create)
-			adminGroup.PUT("/project-types/:id", projectTypeAdminHandler.Update)
-			adminGroup.DELETE("/project-types/:id", projectTypeAdminHandler.Delete)
+		adminGroup.PUT("/project-types/:id", projectTypeAdminHandler.Update)
+		adminGroup.DELETE("/project-types/:id", projectTypeAdminHandler.Delete)
 	}
 
 	// 7. 启动服务

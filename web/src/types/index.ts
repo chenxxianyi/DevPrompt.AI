@@ -64,6 +64,15 @@ export interface MembershipPlan {
   status: 'active' | 'disabled'
 }
 
+export interface TrialRequestPayload {
+  planCode: string
+  contact?: string
+  company?: string
+  teamSize?: string
+  useCase?: string
+  message?: string
+}
+
 export interface LoginParams {
   email: string
   password: string

@@ -16,3 +16,7 @@ export function likePrompt(id: number) {
 export function favoritePrompt(id: number) {
   return request.post(`/prompts/${id}/favorite`)
 }
+
+export function getFavoritePrompts(params?: { page?: number; pageSize?: number }) {
+  return request.get<{ data: PaginatedData<PromptTemplate> }>('/prompts/favorites', { params })
+}

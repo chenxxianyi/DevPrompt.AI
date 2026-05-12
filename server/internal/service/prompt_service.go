@@ -60,6 +60,62 @@ func (s *PromptService) List(keyword, category, sort string, page, pageSize int,
 	}, nil
 }
 
+func (s *PromptService) ListFavorites(userID uint64, page, pageSize int) (*response.PaginatedData, error) {
+	if page < 1 {
+		page = 1
+	}
+	if pageSize < 1 || pageSize > 100 {
+		pageSize = 20
+	}
+
+	ids, total, err := s.favoriteRepo.ListUserFavorites(userID, page, pageSize)
+	if err != nil {
+		return nil, err
+	}
+	if len(ids) == 0 {
+		return &response.PaginatedData{
+			List:     []model.PromptTemplate{},
+			Total:    total,
+			Page:     page,
+			PageSize: pageSize,
+		}, nil
+	}
+
+	templates, err := s.templateRepo.FindByIDs(ids)
+	if err != nil {
+		return nil, err
+	}
+
+	s.parseTagsForList(templates)
+	s.attachUserInteractions(userID, templates)
+
+	orderMap := make(map[uint64]int, len(ids))
+	for i, id := range ids {
+		orderMap[id] = i
+	}
+
+	ordered := make([]model.PromptTemplate, len(ids))
+	for _, tpl := range templates {
+		if idx, ok := orderMap[tpl.ID]; ok {
+			ordered[idx] = tpl
+		}
+	}
+
+	result := make([]model.PromptTemplate, 0, len(ordered))
+	for _, tpl := range ordered {
+		if tpl.ID != 0 {
+			result = append(result, tpl)
+		}
+	}
+
+	return &response.PaginatedData{
+		List:     result,
+		Total:    total,
+		Page:     page,
+		PageSize: pageSize,
+	}, nil
+}
+
 // GetBySlug 根据 slug 获取模板详情
 func (s *PromptService) GetBySlug(slug string, userID uint64) (*model.PromptTemplate, error) {
 	template, err := s.templateRepo.FindBySlug(slug)

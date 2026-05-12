@@ -1,7 +1,6 @@
 <template>
   <div class="layout-container">
     <el-container style="height: 100vh">
-      <!-- 侧边栏 -->
       <el-aside :width="appStore.sidebarCollapsed ? '64px' : '220px'" class="layout-aside">
         <div class="logo-area">
           <span v-if="!appStore.sidebarCollapsed" class="logo-text">DevPrompt AI</span>
@@ -47,6 +46,10 @@
             <el-icon><Tickets /></el-icon>
             <span>订单管理</span>
           </el-menu-item>
+          <el-menu-item index="/trial-requests">
+            <el-icon><MessageBox /></el-icon>
+            <span>试用申请管理</span>
+          </el-menu-item>
           <el-menu-item index="/project-types">
             <el-icon><Grid /></el-icon>
             <span>项目类型管理</span>
@@ -55,7 +58,6 @@
       </el-aside>
 
       <el-container>
-        <!-- 顶部栏 -->
         <el-header class="layout-header">
           <div class="header-left">
             <el-icon class="collapse-btn" @click="appStore.toggleSidebar" style="cursor: pointer; font-size: 20px;">
@@ -82,7 +84,6 @@
           </div>
         </el-header>
 
-        <!-- 主内容 -->
         <el-main class="layout-main">
           <router-view />
         </el-main>
@@ -97,7 +98,7 @@ import { useAuthStore } from '@/store/auth'
 import { useAppStore } from '@/store/app'
 import {
   Odometer, User, Collection, Document, Cpu,
-  List, Coin, Tickets, Fold, Expand, UserFilled, Grid,
+  List, Coin, Tickets, Fold, Expand, UserFilled, Grid, MessageBox,
 } from '@element-plus/icons-vue'
 
 const route = useRoute()
@@ -115,12 +116,14 @@ function handleLogout() {
 .layout-container {
   height: 100vh;
 }
+
 .layout-aside {
   background-color: #001529;
   overflow-y: auto;
   overflow-x: hidden;
   transition: width 0.3s;
 }
+
 .logo-area {
   height: 60px;
   display: flex;
@@ -131,12 +134,15 @@ function handleLogout() {
   font-weight: 700;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
+
 .logo-text-short {
   font-size: 14px;
 }
+
 .el-menu {
   border-right: none;
 }
+
 .layout-header {
   display: flex;
   align-items: center;
@@ -146,25 +152,30 @@ function handleLogout() {
   padding: 0 20px;
   height: 60px;
 }
+
 .header-left {
   display: flex;
   align-items: center;
   gap: 16px;
 }
+
 .header-right {
   display: flex;
   align-items: center;
 }
+
 .user-info {
   display: flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
 }
+
 .username {
   font-size: 14px;
   color: #333;
 }
+
 .layout-main {
   background-color: #f0f2f5;
   padding: 20px;

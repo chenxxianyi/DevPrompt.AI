@@ -3,6 +3,7 @@ package repository
 import (
 	"devprompt-ai/internal/model"
 	"errors"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -53,6 +54,30 @@ func (r *UserRepository) FindByUsername(username string) (*model.User, error) {
 // Update 更新用户信息
 func (r *UserRepository) Update(user *model.User) error {
 	return r.db.Save(user).Error
+}
+
+func (r *UserRepository) UpdateMembership(userID uint64, level string, durationDays int) error {
+	user, err := r.FindByID(userID)
+	if err != nil {
+		return err
+	}
+	if user == nil {
+		return gorm.ErrRecordNotFound
+	}
+
+	base := time.Now()
+	if user.MembershipExpiredAt != nil {
+		if parsed, err := time.Parse("2006-01-02 15:04:05", *user.MembershipExpiredAt); err == nil && parsed.After(base) {
+			base = parsed
+		}
+	}
+
+	expiry := base.AddDate(0, 0, durationDays).Format("2006-01-02 15:04:05")
+	updates := map[string]interface{}{
+		"membership_level":      level,
+		"membership_expired_at": expiry,
+	}
+	return r.db.Model(&model.User{}).Where("id = ?", userID).Updates(updates).Error
 }
 
 // List 分页查询用户列表（管理后台用）

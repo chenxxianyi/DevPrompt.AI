@@ -147,3 +147,18 @@ export interface LoginResult {
   token: string
   user: User
 }
+
+export interface TrialRequest {
+  id: number
+  createdAt: string
+  updatedAt: string
+  userId: number
+  planCode: 'pro' | 'team' | 'enterprise'
+  contact: string
+  company: string
+  teamSize: string
+  useCase: string
+  message: string
+  status: 'pending' | 'contacted' | 'approved' | 'rejected'
+  adminNote: string
+}

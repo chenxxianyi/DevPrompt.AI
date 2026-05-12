@@ -16,16 +16,16 @@ func NewTrialRequestRepository(db *gorm.DB) *TrialRequestRepository {
 	return &TrialRequestRepository{db: db}
 }
 
+func (r *TrialRequestRepository) DB() *gorm.DB {
+	return r.db
+}
+
 func (r *TrialRequestRepository) Create(req *model.TrialRequest) error {
 	return r.db.Create(req).Error
 }
 
-// ResetToPending 将已拒绝的申请重置为 pending 状态
-func (r *TrialRequestRepository) ResetToPending(userID uint64, planCode string) error {
-	res := r.db.Model(&model.TrialRequest{}).
-		Where("user_id = ? AND plan_code = ? AND status = ?", userID, planCode, "rejected").
-		Update("status", "pending")
-	return res.Error
+func (r *TrialRequestRepository) Update(req *model.TrialRequest) error {
+	return r.db.Save(req).Error
 }
 
 func normalizePage(page, pageSize int) (int, int) {
@@ -53,10 +53,15 @@ func (r *TrialRequestRepository) List(page, pageSize int) ([]model.TrialRequest,
 	return list, total, err
 }
 
-func (r *TrialRequestRepository) UpdateStatus(id uint64, status string) error {
+func (r *TrialRequestRepository) UpdateStatus(id uint64, status, adminNote string) error {
+	updates := map[string]interface{}{
+		"status":     status,
+		"admin_note": adminNote,
+	}
+
 	res := r.db.Model(&model.TrialRequest{}).
 		Where("id = ?", id).
-		Update("status", status)
+		Updates(updates)
 	if res.Error != nil {
 		return res.Error
 	}
@@ -69,6 +74,15 @@ func (r *TrialRequestRepository) UpdateStatus(id uint64, status string) error {
 func (r *TrialRequestRepository) FindByUserAndPlan(userID uint64, planCode string) (*model.TrialRequest, error) {
 	var req model.TrialRequest
 	err := r.db.Where("user_id = ? AND plan_code = ?", userID, planCode).First(&req).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, nil
+	}
+	return &req, err
+}
+
+func (r *TrialRequestRepository) FindByID(id uint64) (*model.TrialRequest, error) {
+	var req model.TrialRequest
+	err := r.db.First(&req, id).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, nil
 	}

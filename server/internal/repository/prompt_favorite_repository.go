@@ -55,3 +55,23 @@ func (r *PromptFavoriteRepository) FindUserFavorites(userID uint64, promptIDs []
 	}
 	return result, nil
 }
+
+func (r *PromptFavoriteRepository) ListUserFavorites(userID uint64, page, pageSize int) ([]uint64, int64, error) {
+	var total int64
+	var ids []uint64
+
+	base := r.db.Table("prompt_favorites pf").
+		Joins("JOIN prompt_templates pt ON pt.id = pf.prompt_template_id AND pt.status = ?", "active").
+		Where("pf.user_id = ?", userID)
+
+	if err := base.Count(&total).Error; err != nil {
+		return nil, 0, err
+	}
+
+	offset := (page - 1) * pageSize
+	if err := base.Order("pf.id DESC").Offset(offset).Limit(pageSize).Pluck("pf.prompt_template_id", &ids).Error; err != nil {
+		return nil, 0, err
+	}
+
+	return ids, total, nil
+}

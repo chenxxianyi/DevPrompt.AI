@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { PromptTemplate, PromptCategory } from '@/types'
-import { getPrompts, getPromptBySlug, likePrompt, favoritePrompt } from '@/api/prompts'
+import { getPrompts, getPromptBySlug, likePrompt, favoritePrompt, getFavoritePrompts } from '@/api/prompts'
 import { getCategories } from '@/api/categories'
 
 export const usePromptStore = defineStore('prompt', () => {
@@ -14,6 +14,9 @@ export const usePromptStore = defineStore('prompt', () => {
   const pageSize = ref(20)
   const total = ref(0)
   const loading = ref(false)
+  const favoriteTemplates = ref<PromptTemplate[]>([])
+  const favoriteTotal = ref(0)
+  const favoriteLoading = ref(false)
 
   const filteredTemplates = computed(() => allTemplates.value)
 
@@ -87,9 +90,30 @@ export const usePromptStore = defineStore('prompt', () => {
         t.isFavorited = res.data.data.favorited
         t.favoriteCount += res.data.data.favorited ? 1 : -1
       }
+      const fav = favoriteTemplates.value.find(t => t.id === id)
+      if (fav) {
+        fav.isFavorited = res.data.data.favorited
+        fav.favoriteCount += res.data.data.favorited ? 1 : -1
+      }
+      if (!res.data.data.favorited) {
+        favoriteTemplates.value = favoriteTemplates.value.filter(t => t.id !== id)
+        favoriteTotal.value = Math.max(0, favoriteTotal.value - 1)
+      }
       return res.data.data.favorited
     } catch {
       return null
+    }
+  }
+
+  async function fetchFavoriteTemplates(pageNumber = 1, size = 20) {
+    favoriteLoading.value = true
+    try {
+      const res = await getFavoritePrompts({ page: pageNumber, pageSize: size })
+      favoriteTemplates.value = res.data.data.list
+      favoriteTotal.value = res.data.data.total
+      return res.data.data
+    } finally {
+      favoriteLoading.value = false
     }
   }
 
@@ -118,9 +142,9 @@ export const usePromptStore = defineStore('prompt', () => {
 
   return {
     allTemplates, allCategories, selectedCategory, searchKeyword, sortBy,
-    page, pageSize, total, totalPages, loading,
+    page, pageSize, total, totalPages, loading, favoriteTemplates, favoriteTotal, favoriteLoading,
     filteredTemplates, fetchCategories, fetchTemplates,
-    getTemplateBySlug, toggleLike, toggleFavorite,
+    getTemplateBySlug, toggleLike, toggleFavorite, fetchFavoriteTemplates,
     setPage, setSort, setCategory, setKeyword,
   }
 })

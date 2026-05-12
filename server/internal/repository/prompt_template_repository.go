@@ -121,3 +121,12 @@ func (r *PromptTemplateRepository) AdminList(page, pageSize int) ([]model.Prompt
 	err := r.db.Preload("Category").Order("id DESC").Offset(offset).Limit(pageSize).Find(&templates).Error
 	return templates, total, err
 }
+
+func (r *PromptTemplateRepository) FindByIDs(ids []uint64) ([]model.PromptTemplate, error) {
+	var templates []model.PromptTemplate
+	if len(ids) == 0 {
+		return templates, nil
+	}
+	err := r.db.Preload("Category").Where("id IN ? AND status = ?", ids, "active").Find(&templates).Error
+	return templates, err
+}

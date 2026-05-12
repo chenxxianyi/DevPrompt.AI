@@ -203,4 +203,4 @@ INSERT IGNORE INTO ai_models (provider, model_name, display_name, api_base_url, 
 ('qwen', 'qwen-plus', 'Qwen Plus', '', 0, 'active', 7, 60);
 
 INSERT IGNORE INTO users (username, email, password_hash, role, membership_level, status) VALUES
-('admin', 'admin@devprompt.ai', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'admin', 'enterprise', 'active');
+('admin', 'admin@devprompt.ai', '$2a$10$AF5Rt9xWBY92jLZFo83YMe7GIylAleOIk6ag7E2rjQmfsrbvatnfO', 'admin', 'enterprise', 'active');

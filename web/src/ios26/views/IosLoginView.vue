@@ -136,7 +136,7 @@ function handleSocialLogin(provider: string) {
 }
 
 .ios-page {
-  max-width: 480px;
+  max-width: 400px;
   margin: 0 auto;
   padding: 24px var(--ios-page-padding) 48px;
   width: 100%;

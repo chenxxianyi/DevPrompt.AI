@@ -196,12 +196,86 @@ function generatorIconPath(id: string): string {
 
       <!-- CTA -->
       <section class="py-20 text-center">
-        <div class="glass p-14 rounded-[20px] relative overflow-hidden" style="background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(6,182,212,.08));border-color:rgba(139,92,246,.2)">
-          <h2 class="text-[28px] font-extrabold mb-3">解锁无限生成次数</h2>
-          <p class="text-[var(--text-secondary)] mb-7 text-base">升级 Pro 会员，每日 100 次生成额度，享受更多高级功能</p>
-          <router-link to="/pricing" class="btn btn-primary text-[15px] px-7 py-3 rounded-xl no-underline">查看会员方案</router-link>
+        <div class="home-cta glass relative overflow-hidden rounded-[20px] px-6 py-12 sm:px-10 lg:p-14">
+          <div class="home-cta__content mx-auto max-w-2xl">
+            <span class="home-cta__badge">Pro 会员每日 100 次额度</span>
+            <h2 class="home-cta__title">解锁更多生成次数</h2>
+            <p class="home-cta__desc">升级 Pro 会员，获得更高的每日生成额度，并解锁更多高级 Prompt 能力。</p>
+            <router-link to="/pricing" class="btn btn-primary home-cta__button no-underline">查看会员方案</router-link>
+          </div>
         </div>
       </section>
     </div>
   </div>
 </template>
+
+<style scoped>
+.home-cta {
+  background:
+    linear-gradient(135deg, rgba(21, 18, 45, 0.96), rgba(5, 26, 38, 0.94)),
+    linear-gradient(135deg, rgba(139, 92, 246, 0.24), rgba(6, 182, 212, 0.18));
+  border-color: rgba(167, 139, 250, 0.38);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 24px 80px rgba(0, 0, 0, 0.28);
+}
+
+.home-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.06), transparent 28%, transparent 72%, rgba(6, 182, 212, 0.08));
+}
+
+.home-cta__content {
+  position: relative;
+  z-index: 1;
+}
+
+.home-cta__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  padding: 6px 12px;
+  border: 1px solid rgba(125, 211, 252, 0.28);
+  border-radius: 999px;
+  background: rgba(6, 182, 212, 0.12);
+  color: #bae6fd;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.home-cta__title {
+  margin-bottom: 12px;
+  color: #f8fbff;
+  font-size: clamp(26px, 4vw, 36px);
+  font-weight: 900;
+  line-height: 1.18;
+  text-shadow: 0 1px 18px rgba(255, 255, 255, 0.12);
+}
+
+.home-cta__desc {
+  margin: 0 auto 28px;
+  max-width: 560px;
+  color: #dbe7ff;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.8;
+}
+
+.home-cta__button {
+  min-height: 48px;
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-size: 15px;
+}
+
+@media (max-width: 640px) {
+  .home-cta__desc {
+    font-size: 15px;
+  }
+}
+</style>

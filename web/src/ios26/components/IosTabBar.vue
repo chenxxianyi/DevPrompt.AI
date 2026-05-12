@@ -9,6 +9,7 @@ const router = useRouter()
 
 const tabRefs = ref<HTMLElement[]>([])
 const trackRef = ref<HTMLElement | null>(null)
+let resizeObserver: ResizeObserver | null = null
 
 const indicatorStyle = ref({
   transform: 'translateX(0px)',
@@ -46,13 +47,38 @@ function updateIndicator() {
 
 watch(activeIndex, updateIndicator)
 
+const isCompact = ref(false)
+let lastScrollY = 0
+
+watch(isCompact, () => {
+  updateIndicator()
+})
+
+function handleScroll() {
+  const currentY = window.scrollY
+  if (currentY > lastScrollY && currentY > 60) {
+    isCompact.value = true
+  } else if (currentY < lastScrollY) {
+    isCompact.value = false
+  }
+  lastScrollY = currentY
+}
+
 onMounted(() => {
+  lastScrollY = window.scrollY
   updateIndicator()
   window.addEventListener('resize', updateIndicator)
+  window.addEventListener('scroll', handleScroll, { passive: true })
+  if (trackRef.value) {
+    resizeObserver = new ResizeObserver(updateIndicator)
+    resizeObserver.observe(trackRef.value)
+  }
 })
 
 onUnmounted(() => {
   window.removeEventListener('resize', updateIndicator)
+  window.removeEventListener('scroll', handleScroll)
+  resizeObserver?.disconnect()
 })
 
 function go(path: string) {
@@ -61,10 +87,10 @@ function go(path: string) {
 </script>
 
 <template>
-  <header class="ios-topnav ios-no-select" role="banner">
+  <header class="ios-topnav ios-no-select" :class="{ 'is-compact': isCompact }" role="banner">
     <div class="ios-topnav__inner">
       <!-- Brand (left) -->
-      <div class="ios-topnav__brand" @click="router.push(IOS_ROOT)">
+      <router-link :to="IOS_ROOT" class="ios-topnav__brand">
         <div class="ios-topnav__logo">
           <IosIcon
             path="M6.464 6.464A5 5 0 0 1 10 5.036V3a1 1 0 1 1 2 0v2.036a5 5 0 0 1 3.536 1.428l1.41 1.41-1.414 1.415-1.41-1.41A3 3 0 0 0 10 7.036v2.928l-3.536 3.536a3 3 0 0 0 4.242 4.242l1.41 1.41-1.414 1.415-1.41-1.41A5 5 0 0 1 6.464 6.464Z"
@@ -73,7 +99,7 @@ function go(path: string) {
           />
         </div>
         <span class="ios-topnav__brand-name">DevPrompt</span>
-      </div>
+      </router-link>
 
       <!-- Nav tabs (center) with morphing glass indicator -->
       <nav class="ios-topnav__nav" aria-label="主导航">
@@ -139,9 +165,10 @@ function go(path: string) {
   transform: translateX(-50%);
   z-index: 60;
   height: 64px;
-  width: max-content;
-  min-width: 640px;
+  width: 80vw;
   max-width: calc(100vw - 40px);
+  clip-path: inset(0 round 32px);
+  transition: width 0.55s var(--ios-ease-gentle);
   border-radius: 32px;
   background: var(--ios-glass-bg-light-lg);
   backdrop-filter: blur(var(--ios-glass-blur-lg)) saturate(2.4) brightness(1.04);
@@ -189,6 +216,8 @@ function go(path: string) {
   padding: 6px 8px 6px 0;
   border-radius: var(--ios-radius-md);
   transition: opacity 0.15s;
+  text-decoration: none;
+  color: inherit;
 }
 
 .ios-topnav__brand:hover {
@@ -213,6 +242,14 @@ function go(path: string) {
   letter-spacing: -0.4px;
   color: var(--ios-color-label-primary);
   white-space: nowrap;
+  overflow: hidden;
+  max-width: 120px;
+  transition: max-width 0.55s var(--ios-ease-gentle), opacity 0.3s var(--ios-ease-gentle);
+}
+
+.ios-topnav.is-compact .ios-topnav__brand-name {
+  max-width: 0;
+  opacity: 0;
 }
 
 /* Nav tabs */
@@ -269,8 +306,12 @@ function go(path: string) {
   font-weight: 500;
   letter-spacing: -0.2px;
   white-space: nowrap;
-  transition: color 0.2s var(--ios-ease-gentle);
+  transition: color 0.2s var(--ios-ease-gentle), padding 0.55s var(--ios-ease-gentle);
   min-height: 42px;
+}
+
+.ios-topnav.is-compact .ios-topnav__tab {
+  padding: 9px 10px;
 }
 
 .ios-topnav__tab:hover:not(.is-active) {
@@ -284,6 +325,16 @@ function go(path: string) {
 
 .ios-topnav__tab-label {
   line-height: 1;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 80px;
+  transition: max-width 0.55s var(--ios-ease-gentle), opacity 0.3s var(--ios-ease-gentle);
+}
+
+.ios-topnav.is-compact .ios-topnav__tab-label {
+  max-width: 0;
+  opacity: 0;
 }
 
 /* Actions */
@@ -381,5 +432,28 @@ function go(path: string) {
     border: none;
     background: transparent;
   }
+}
+
+/* Compact: hide classic label text on desktop too */
+.ios-topnav__classic-label {
+  overflow: hidden;
+  max-width: 4em;
+  white-space: nowrap;
+  transition: max-width 0.55s var(--ios-ease-gentle), opacity 0.3s var(--ios-ease-gentle);
+}
+
+.ios-topnav.is-compact .ios-topnav__classic-label {
+  max-width: 0;
+  opacity: 0;
+}
+
+.ios-topnav.is-compact {
+  width: 380px;
+}
+
+.ios-topnav.is-compact .ios-topnav__classic-btn {
+  padding: 5px 8px;
+  border: none;
+  background: transparent;
 }
 </style>

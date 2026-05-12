@@ -4,7 +4,7 @@
 
 ## 当前实现
 
-- 用户端 `web/`：浏览 Prompt 模板、查看详情、登录注册、四类 Prompt 生成、生成历史、个人工作台、会员方案页
+- 用户端 `web/`：浏览 Prompt 模板、查看详情、登录注册、四类 Prompt 生成、生成历史、个人工作台、会员方案页；`/ios26` 提供 Liquid Glass 风格的设计变体，与旧版路由完全隔离
 - 管理后台 `admin/`：用户、分类、模板、AI 模型、调用日志、会员方案、订单、项目类型管理
 - 服务端 `server/`：认证、模板、生成、会员、用户统计、试用申请、后台管理 API
 - 基础设施：MySQL、Redis、Nginx、`docker-compose.yml`
@@ -202,8 +202,6 @@ docker compose up -d --build
 ## 文档索引
 
 - [server/README.md](server/README.md)
-- [web/README.md](web/README.md)
+- [web/README.md](web/README.md)（含 iOS26 组件架构与滚动行为说明）
 - [admin/README.md](admin/README.md)
-- [NEXT_OPTIMIZATION_PLAN.md](NEXT_OPTIMIZATION_PLAN.md)
-- [PRODUCT_OPTIMIZATION_DEVELOPMENT.md](PRODUCT_OPTIMIZATION_DEVELOPMENT.md)
-- [PR_FIX_GUIDE.md](PR_FIX_GUIDE.md)
+- [IOS26_OPTIMIZATION_REVIEW.md](IOS26_OPTIMIZATION_REVIEW.md)（iOS26 代码审查与修复历史）

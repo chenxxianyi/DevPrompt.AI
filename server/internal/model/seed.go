@@ -1,6 +1,7 @@
 package model
 
 import (
+	"errors"
 	"log"
 
 	"gorm.io/gorm"
@@ -120,18 +121,29 @@ func seedAIModels(db *gorm.DB) error {
 }
 
 func seedAdminUser(db *gorm.DB) error {
-	var count int64
-	if err := db.Model(&User{}).Count(&count).Error; err != nil {
+	const (
+		adminEmail         = "admin@devprompt.ai"
+		adminPasswordHash  = "$2a$10$AF5Rt9xWBY92jLZFo83YMe7GIylAleOIk6ag7E2rjQmfsrbvatnfO" // admin123
+		legacyPasswordHash = "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy"
+	)
+
+	var admin User
+	if err := db.Where("email = ?", adminEmail).First(&admin).Error; err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		return err
-	}
-	if count > 0 {
+	} else if err == nil {
+		if admin.PasswordHash == legacyPasswordHash {
+			if err := db.Model(&admin).Update("password_hash", adminPasswordHash).Error; err != nil {
+				return err
+			}
+			log.Println("default admin password hash fixed (admin@devprompt.ai / admin123)")
+		}
 		return nil
 	}
 
-	admin := User{
+	admin = User{
 		Username:        "admin",
-		Email:           "admin@devprompt.ai",
-		PasswordHash:    "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy", // admin123
+		Email:           adminEmail,
+		PasswordHash:    adminPasswordHash,
 		Role:            "admin",
 		MembershipLevel: "enterprise",
 		Status:          "active",

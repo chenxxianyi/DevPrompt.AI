@@ -37,6 +37,7 @@ function goBack() {
   else if (window.history.length > 1) router.back()
   else router.push(IOS_ROOT)
 }
+
 </script>
 
 <template>
@@ -77,9 +78,7 @@ function goBack() {
 
 <style scoped>
 .ios-navbar {
-  position: sticky;
-  top: calc(var(--ios-topbar-h) + 8px);
-  z-index: 50;
+  position: static;
   width: 100%;
   max-width: var(--ios-content-max-web);
   margin: 0 auto;

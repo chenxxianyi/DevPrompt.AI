@@ -6,9 +6,9 @@ app:
 
 mysql:
   host: 127.0.0.1
-  port: 3306
-  user: root
-  password: 123456
+  port: 3310
+  user: xxladmin
+  password: XXLadmin_2021!
   database: devprompt_ai
   charset: utf8mb4
   max_idle_conns: 10
@@ -38,9 +38,9 @@ ai:
     base_url: https://generativelanguage.googleapis.com/v1beta
     default_model: gemini-2.0-flash
   deepseek:
-    api_key: ""
+    api_key: "sk-292238721920406aacd314f9b1ec06e0"
     base_url: https://api.deepseek.com
-    default_model: deepseek-chat
+    default_model: deepseek-v4-flash
   qwen:
     api_key: ""
     base_url: https://dashscope.aliyuncs.com/compatible-mode/v1

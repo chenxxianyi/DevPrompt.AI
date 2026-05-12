@@ -127,8 +127,60 @@ npm run build
 - `techStacks` 和 `aiTools` 仍来自 `src/mock/data.ts`
 - 历史页和工作台已经接真实后端接口，不再是纯前端假数据流程
 
+## iOS26 风格界面（`/ios26`）
+
+`web/src/ios26/` 是独立的设计变体，入口路径为 `/ios26`，与旧版路由完全隔离，共用同一套后端 API 和 Pinia Store。
+
+### 路由
+
+| 路由 | 说明 |
+| --- | --- |
+| `/ios26` | 首页 |
+| `/ios26/prompts` | 模板列表 |
+| `/ios26/prompts/:slug` | 模板详情 |
+| `/ios26/generator` | 生成工作台 |
+| `/ios26/generator/history` | 生成历史 |
+| `/ios26/dashboard` | 个人工作台 |
+| `/ios26/login` | 登录 |
+| `/ios26/pricing` | 会员方案 |
+
+### 组件架构
+
+| 组件 | 说明 |
+| --- | --- |
+| `IosAppShell.vue` | 根容器，挂载顶部导航栏、移动端底部 TabBar、Toast；管理主题（system / light / dark）|
+| `IosTabBar.vue` | 固定居中的 Liquid Glass 导航胶囊；向下滚动超过 60px 时收缩至紧凑态（`width: 80vw → 380px`），向上滚动恢复；使用 `ResizeObserver` 保持指示器位置精确 |
+| `IosNavBar.vue` | 页面级标题栏，`position: static`，随内容滚动，不吸附 |
+| `IosGlassPanel.vue` | 通用毛玻璃卡片 |
+| `IosButton.vue` | 多变体按钮（filled / tinted / plain）|
+| `IosSelect.vue` | 自定义下拉选择器 |
+| `IosSegmentedControl.vue` | 分段控制器 |
+| `IosSheet.vue` | 底部浮层 |
+| `IosListRow.vue` | 列表行 |
+| `IosToast.vue` | 全局 Toast 通知 |
+| `IosIcon.vue` | SVG 图标封装 |
+
+### IosTabBar 滚动行为
+
+- **默认态**：`width: 80vw`，显示品牌名称、Tab 文字标签、经典版按钮
+- **紧凑态**（`is-compact`）：`width: 380px`，品牌名 / 标签文字 / 经典版文字通过 `max-width: 0 + opacity: 0` 动画收起，仅保留图标
+- 过渡：`width 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94)`
+- 指示器位置由 `ResizeObserver` 监听 `trackRef` 自动更新，不依赖 `setTimeout` 轮询
+
+### 主题
+
+通过 `IosAppShell` 的 `data-theme` 属性控制：
+
+- 默认跟随系统（`prefers-color-scheme`）
+- 可选 `light` / `dark`，存储于 `localStorage`（key：`ios26-theme`）
+
+### 设计 Token
+
+所有 CSS 变量挂载在 `.ios26-app` 作用域下，以 `--ios-` 前缀命名，见 `src/ios26/styles/tokens.css`。
+
 ## 适合继续补强的地方
 
 - 模板适用工具、示例输入输出等元数据还不够完整
 - 会员页已支持提交试用申请，但前端未提供联系人和备注输入
 - 常用技术栈与常用 AI 工具仍是前端静态配置
+- iOS26 的 `IosSelect` 缺少完整的键盘导航和 ARIA 状态（见 `IOS26_OPTIMIZATION_REVIEW.md`）

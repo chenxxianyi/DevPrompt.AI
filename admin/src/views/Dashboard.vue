@@ -106,7 +106,7 @@ onMounted(async () => {
   color: #1d2129;
 }
 .stat-card {
-  border-radius: 8px;
+  border-radius: 16px;
 }
 .stat-inner {
   display: flex;
@@ -132,5 +132,6 @@ onMounted(async () => {
   font-size: 14px;
   color: #86909c;
   margin: 4px 0 0;
+  white-space: nowrap;
 }
 </style>

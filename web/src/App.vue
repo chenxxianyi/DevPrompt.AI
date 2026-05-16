@@ -5,6 +5,7 @@ import { useAuthStore } from '@/store/auth'
 import NavBar from '@/components/NavBar.vue'
 import AppFooter from '@/components/AppFooter.vue'
 import ToastContainer from '@/components/ToastContainer.vue'
+import BackToTop from '@/components/BackToTop.vue'
 
 const auth = useAuthStore()
 const route = useRoute()
@@ -38,6 +39,7 @@ onMounted(() => {
     </main>
     <AppFooter />
     <ToastContainer />
+    <BackToTop />
   </template>
 </template>
 

@@ -5,6 +5,7 @@ import { useAuthStore } from '@/store/auth'
 import IosTabBar from './IosTabBar.vue'
 import IosIcon from './IosIcon.vue'
 import IosToast from './IosToast.vue'
+import IosBackToTop from './IosBackToTop.vue'
 import { IOS_THEME_STORAGE_KEY, IOS_TABS, type IosTheme } from '../constants'
 import '../styles/index.css'
 
@@ -93,6 +94,7 @@ defineExpose({ applyTheme })
     </nav>
 
     <IosToast />
+    <IosBackToTop />
   </div>
 </template>
 

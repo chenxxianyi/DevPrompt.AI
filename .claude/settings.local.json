@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//d/MyProject/Workspec/**)",
+      "Bash(echo \"---exit: $?\")",
+      "Bash(export MYSQL_HOME=\"D:/tools/mysql-8.0.36-winx64\")",
+      "Bash(export PATH=\"$MYSQL_HOME/bin:$PATH\")",
+      "Bash(mysqld --defaults-file=D:/tools/mysql-8.0.36-winx64/my.ini)",
+      "Bash(\"D:/tools/mysql-8.0.36-winx64/bin/mysqladmin.exe\" -u root ping)",
+      "Read(//d/tools/mysql-8.0.36-winx64/**)",
+      "Bash(\"D:/tools/mysql-8.0.36-winx64/bin/mysqld.exe\" --defaults-file=\"D:/tools/mysql-8.0.36-winx64/my.ini\")",
+      "Bash(go build *)",
+      "Bash(python3 -c ' *)",
+      "Bash(node -e ' *)",
+      "Bash(npx vue-tsc *)"
+    ]
+  }
+}

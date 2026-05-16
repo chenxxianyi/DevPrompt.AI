@@ -87,7 +87,7 @@ server/internal/recipe/
 
 ## 4. 分期路线图
 
-## Phase 1：内置 Recipe 引擎
+## Phase 1：内置 Recipe 引擎 ✅ 已完成
 
 目标：在不大规模改数据库的情况下，显著提升生成质量。
 
@@ -114,7 +114,18 @@ server/internal/recipe/
 - Claude Code 输出包含上下文、任务、约束、执行步骤和验收标准。
 - Prompt 优化输出包含优化后 Prompt、优化说明、适用场景和风险提示。
 
-## Phase 2：前端质量控制项
+### 已完成内容（2026-05-16）
+
+- 新增 `server/internal/recipe/` 包，包含 `types.go`、`engine.go`、`project.go`、`cursor_rules.go`、`claude_code.go`、`optimize.go`、`tool_adapters.go`。
+- 四类内置 Recipe 已实现，每类包含：结构化 system prompt、工具适配、质量控制、可选验收标准/风险检查/测试建议/部署建议、自检要求。
+- `QualityOptions` 支持 qualityMode（concise/standard/expert）、outputFormat（markdown/checklist/json/plain）及四个布尔开关。
+- `GeneratorService` 已接入 Recipe Engine，`Generate` 方法签名改为接收 `QualityOptions`。
+- `GeneratorHandler` 已改造，从请求中解析可选 QualityOptions 字段，删除旧的 `build*Prompt` 函数。
+- 四个请求结构体新增可选 QualityOptions 字段（使用指针类型，不传时使用默认策略，保持向后兼容）。
+- 专家模式下 MaxTokens 提升至 8192。
+- 生成记录的 Input JSON 中包含完整的请求参数（含 QualityOptions）。
+
+## Phase 2：前端质量控制项 ✅ 已完成
 
 目标：让用户可控地提升生成质量。
 
@@ -151,23 +162,34 @@ interface QualityOptions {
 
 ```go
 type QualityOptions struct {
-    QualityMode               string `json:"qualityMode"`
-    OutputFormat              string `json:"outputFormat"`
-    IncludeAcceptanceCriteria bool   `json:"includeAcceptanceCriteria"`
-    IncludeRiskCheck          bool   `json:"includeRiskCheck"`
-    IncludeTestPlan           bool   `json:"includeTestPlan"`
-    IncludeDeploymentNotes    bool   `json:"includeDeploymentNotes"`
+    QualityMode               string `json:”qualityMode”`
+    OutputFormat              string `json:”outputFormat”`
+    IncludeAcceptanceCriteria bool   `json:”includeAcceptanceCriteria”`
+    IncludeRiskCheck          bool   `json:”includeRiskCheck”`
+    IncludeTestPlan           bool   `json:”includeTestPlan”`
+    IncludeDeploymentNotes    bool   `json:”includeDeploymentNotes”`
 }
 ```
 
 ### 验收标准
 
-- 用户切换“简洁 / 标准 / 专家”后，输出长度和深度明显不同。
+- 用户切换”简洁 / 标准 / 专家”后，输出长度和深度明显不同。
 - 用户选择 JSON 后，输出应尽量保持可解析结构。
 - 用户关闭风险检查时，结果中不再强制出现风险章节。
 - 旧客户端不传字段时，后端使用默认策略，不影响兼容性。
 
-## Phase 3：Recipe 版本化与后台运营
+### 已完成内容（2026-05-16）
+
+- `types/index.ts` 新增 `QualityMode`、`OutputFormat`、`QualityOptions` 类型定义。
+- 四个请求参数类型（`ProjectGeneratorParams`、`CursorRulesParams`、`ClaudeCodeParams`、`OptimizeParams`）新增可选 QualityOptions 字段。
+- `store/generator.ts` 新增 6 个质量控制响应式状态：`qualityMode`、`outputFormat`、`includeAcceptanceCriteria`、`includeRiskCheck`、`includeTestPlan`、`includeDeploymentNotes`。
+- `generate()` 函数中四个分支都将 QualityOptions 传递给 API。
+- `resetAll()` 重置质量控制状态到默认值。
+- 标准版 `GeneratorView.vue` 新增"生成质量"面板，包含详细程度下拉框、输出格式下拉框、高级选项复选框。
+- iOS26 版 `IosGeneratorView.vue` 新增"生成质量"面板，使用 SegmentedControl 和 Toggle 组件。
+- 默认值：标准模式 + Markdown + 验收标准开启 + 风险检查开启 + 测试建议关闭 + 部署建议关闭。
+
+## Phase 3：Recipe 版本化与后台运营 ✅ 已完成
 
 目标：让 Prompt 生成策略成为可运营资产。
 
@@ -206,6 +228,18 @@ updated_at
 - 每个生成类型至少有一个默认 active Recipe。
 - 生成记录中能看到使用的 Recipe ID 和版本。
 - 禁用 Recipe 后不会再被新请求选中。
+
+### 已完成内容（2026-05-16）
+
+- 新增 `model/prompt_recipe.go`，定义 `PromptRecipe` 模型，包含 type、target_tool、version、name、description、system_prompt、user_template、output_schema、quality_rubric、status（draft/active/disabled）、is_default、created_by 字段。
+- 新增 `repository/prompt_recipe_repository.go`，实现 CRUD、按类型/工具/状态筛选、查找默认 Recipe、设置默认 Recipe（事务保证同类型只有一个默认）。
+- 新增 `api/admin/prompt_recipe.go`，实现 List（支持筛选）、Create、Update、Delete、SetDefault 五个接口。
+- 新增 `recipe/db_provider.go`，实现 `DbRecipeProvider`，从数据库加载 active Recipe 构建提示词，无 DB Recipe 时回退到内置 Recipe。
+- 改造 `recipe/engine.go`，支持 `NewEngineWithDB()` 注入数据库提供者，Build 时优先使用 DB Recipe，回退到内置 Recipe。
+- 扩展 `GeneratedPrompt` 模型，新增 `recipe_id` 和 `recipe_version` 字段，生成记录保存使用的 Recipe 信息。
+- `BuiltPrompt` 新增 `RecipeID` 和 `RecipeVersion` 字段。
+- main.go 中注册 `PromptRecipe` AutoMigrate、Repository、AdminHandler 和 Admin 路由。
+- 管理后台前端新增 `PromptRecipes.vue` 页面，支持列表筛选、新建/编辑 Recipe、设为默认、删除，侧边栏新增菜单入口。
 
 ## Phase 4：质量评分与反馈闭环
 

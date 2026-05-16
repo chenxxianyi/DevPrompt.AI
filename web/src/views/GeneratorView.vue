@@ -337,6 +337,54 @@ function tabIcon(id: string): string {
           </div>
         </div>
 
+        <!-- ========== Quality Options (shared across all tabs) ========== -->
+        <div class="glass p-7 mb-6">
+          <h3 class="text-[17px] font-bold mb-5 flex items-center gap-2">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"/></svg>
+            生成质量
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="flex flex-col gap-1.5">
+              <label class="text-[13px] font-semibold" style="color:var(--text-secondary)">详细程度</label>
+              <select v-model="gen.qualityMode" class="form-input cursor-pointer">
+                <option value="concise">简洁</option>
+                <option value="standard">标准</option>
+                <option value="expert">专家</option>
+              </select>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label class="text-[13px] font-semibold" style="color:var(--text-secondary)">输出格式</label>
+              <select v-model="gen.outputFormat" class="form-input cursor-pointer">
+                <option value="markdown">Markdown</option>
+                <option value="checklist">清单 (Checklist)</option>
+                <option value="json">JSON</option>
+                <option value="plain">纯 Prompt</option>
+              </select>
+            </div>
+            <div class="flex flex-col gap-3 md:col-span-2">
+              <label class="text-[13px] font-semibold" style="color:var(--text-secondary)">高级选项</label>
+              <div class="flex flex-wrap gap-x-6 gap-y-2">
+                <label class="flex items-center gap-2 text-[13px] cursor-pointer" style="color:var(--text-primary)">
+                  <input type="checkbox" v-model="gen.includeAcceptanceCriteria" class="w-4 h-4 rounded accent-[var(--accent)]">
+                  验收标准
+                </label>
+                <label class="flex items-center gap-2 text-[13px] cursor-pointer" style="color:var(--text-primary)">
+                  <input type="checkbox" v-model="gen.includeRiskCheck" class="w-4 h-4 rounded accent-[var(--accent)]">
+                  风险检查
+                </label>
+                <label class="flex items-center gap-2 text-[13px] cursor-pointer" style="color:var(--text-primary)">
+                  <input type="checkbox" v-model="gen.includeTestPlan" class="w-4 h-4 rounded accent-[var(--accent)]">
+                  测试建议
+                </label>
+                <label class="flex items-center gap-2 text-[13px] cursor-pointer" style="color:var(--text-primary)">
+                  <input type="checkbox" v-model="gen.includeDeploymentNotes" class="w-4 h-4 rounded accent-[var(--accent)]">
+                  部署建议
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Generate Button -->
         <div class="flex items-center gap-3">
           <button

@@ -162,3 +162,22 @@ export interface TrialRequest {
   status: 'pending' | 'contacted' | 'approved' | 'rejected'
   adminNote: string
 }
+
+// Prompt Recipe
+export interface PromptRecipe {
+  id: number
+  createdAt: string
+  updatedAt: string
+  type: 'project' | 'cursor-rules' | 'claude-code' | 'optimize'
+  targetTool: string
+  version: string
+  name: string
+  description: string
+  systemPrompt: string
+  userTemplate: string
+  outputSchema: string
+  qualityRubric: string
+  status: 'draft' | 'active' | 'disabled'
+  isDefault: boolean
+  createdBy: number
+}

@@ -11,6 +11,8 @@ import type {
   CursorRulesParams,
   ClaudeCodeParams,
   OptimizeParams,
+  QualityMode,
+  OutputFormat,
 } from '@/types'
 
 export type GeneratorTab = 'project' | 'cursor-rules' | 'claude-code' | 'optimize'
@@ -50,6 +52,14 @@ export const useGeneratorStore = defineStore('generator', () => {
   // Flag: features content came from a template (skip line splitting)
   const templateLoaded = ref(false)
 
+  // --- Quality Options ---
+  const qualityMode = ref<QualityMode>('standard')
+  const outputFormat = ref<OutputFormat>('markdown')
+  const includeAcceptanceCriteria = ref(true)
+  const includeRiskCheck = ref(true)
+  const includeTestPlan = ref(false)
+  const includeDeploymentNotes = ref(false)
+
   function setTab(tab: GeneratorTab) {
     activeTab.value = tab
     result.value = ''
@@ -80,6 +90,12 @@ export const useGeneratorStore = defineStore('generator', () => {
               ? [features.value]
               : features.value.split('\n').filter((f: string) => f.trim()),
             targetAiTool: targetAiTool.value,
+            qualityMode: qualityMode.value,
+            outputFormat: outputFormat.value,
+            includeAcceptanceCriteria: includeAcceptanceCriteria.value,
+            includeRiskCheck: includeRiskCheck.value,
+            includeTestPlan: includeTestPlan.value,
+            includeDeploymentNotes: includeDeploymentNotes.value,
           }
           templateLoaded.value = false
           const projectRes = await generateProject(params)
@@ -95,6 +111,12 @@ export const useGeneratorStore = defineStore('generator', () => {
             framework: cursorFramework.value,
             codeStyle: cursorCodeStyle.value,
             rules: cursorRules.value.split('\n').filter((r: string) => r.trim()),
+            qualityMode: qualityMode.value,
+            outputFormat: outputFormat.value,
+            includeAcceptanceCriteria: includeAcceptanceCriteria.value,
+            includeRiskCheck: includeRiskCheck.value,
+            includeTestPlan: includeTestPlan.value,
+            includeDeploymentNotes: includeDeploymentNotes.value,
           }
           const cursorRes = await generateCursorRules(params)
           result.value = cursorRes.data.data.output
@@ -108,6 +130,12 @@ export const useGeneratorStore = defineStore('generator', () => {
             task: claudeTask.value,
             context: claudeContext.value,
             requirements: claudeRequirements.value.split('\n').filter((r: string) => r.trim()),
+            qualityMode: qualityMode.value,
+            outputFormat: outputFormat.value,
+            includeAcceptanceCriteria: includeAcceptanceCriteria.value,
+            includeRiskCheck: includeRiskCheck.value,
+            includeTestPlan: includeTestPlan.value,
+            includeDeploymentNotes: includeDeploymentNotes.value,
           }
           const claudeRes = await generateClaudeCode(params)
           result.value = claudeRes.data.data.output
@@ -121,6 +149,12 @@ export const useGeneratorStore = defineStore('generator', () => {
             rawPrompt: rawPrompt.value,
             targetTool: optimizeTargetTool.value,
             optimizeLevel: optimizeLevel.value,
+            qualityMode: qualityMode.value,
+            outputFormat: outputFormat.value,
+            includeAcceptanceCriteria: includeAcceptanceCriteria.value,
+            includeRiskCheck: includeRiskCheck.value,
+            includeTestPlan: includeTestPlan.value,
+            includeDeploymentNotes: includeDeploymentNotes.value,
           }
           originalPromptForCompare.value = rawPrompt.value
           const optimizeRes = await optimizePrompt(params)
@@ -158,6 +192,13 @@ export const useGeneratorStore = defineStore('generator', () => {
     optimizeTargetTool.value = ''
     originalPromptForCompare.value = ''
     templateLoaded.value = false
+    // Quality
+    qualityMode.value = 'standard'
+    outputFormat.value = 'markdown'
+    includeAcceptanceCriteria.value = true
+    includeRiskCheck.value = true
+    includeTestPlan.value = false
+    includeDeploymentNotes.value = false
     // Shared
     result.value = ''
     error.value = ''
@@ -226,6 +267,8 @@ export const useGeneratorStore = defineStore('generator', () => {
     claudeTask, claudeContext, claudeRequirements,
     // Optimize
     rawPrompt, optimizeLevel, optimizeTargetTool,
+    // Quality Options
+    qualityMode, outputFormat, includeAcceptanceCriteria, includeRiskCheck, includeTestPlan, includeDeploymentNotes,
     // Methods
     setTab, generate, resetAll, loadFromHistory, loadFromTemplate, loadRawPrompt,
   }

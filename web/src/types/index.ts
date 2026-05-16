@@ -84,12 +84,30 @@ export interface RegisterParams {
   password: string
 }
 
+export type QualityMode = 'concise' | 'standard' | 'expert'
+export type OutputFormat = 'markdown' | 'checklist' | 'json' | 'plain'
+
+export interface QualityOptions {
+  qualityMode?: QualityMode
+  outputFormat?: OutputFormat
+  includeAcceptanceCriteria?: boolean
+  includeRiskCheck?: boolean
+  includeTestPlan?: boolean
+  includeDeploymentNotes?: boolean
+}
+
 export interface ProjectGeneratorParams {
   projectName: string
   projectType: string
   techStack: string[]
   features: string[]
   targetAiTool: string
+  qualityMode?: QualityMode
+  outputFormat?: OutputFormat
+  includeAcceptanceCriteria?: boolean
+  includeRiskCheck?: boolean
+  includeTestPlan?: boolean
+  includeDeploymentNotes?: boolean
 }
 
 export interface CursorRulesParams {
@@ -97,18 +115,36 @@ export interface CursorRulesParams {
   framework: string
   codeStyle: string
   rules: string[]
+  qualityMode?: QualityMode
+  outputFormat?: OutputFormat
+  includeAcceptanceCriteria?: boolean
+  includeRiskCheck?: boolean
+  includeTestPlan?: boolean
+  includeDeploymentNotes?: boolean
 }
 
 export interface ClaudeCodeParams {
   task: string
   context: string
   requirements: string[]
+  qualityMode?: QualityMode
+  outputFormat?: OutputFormat
+  includeAcceptanceCriteria?: boolean
+  includeRiskCheck?: boolean
+  includeTestPlan?: boolean
+  includeDeploymentNotes?: boolean
 }
 
 export interface OptimizeParams {
   rawPrompt: string
   targetTool: string
   optimizeLevel: 'basic' | 'professional' | 'expert'
+  qualityMode?: QualityMode
+  outputFormat?: OutputFormat
+  includeAcceptanceCriteria?: boolean
+  includeRiskCheck?: boolean
+  includeTestPlan?: boolean
+  includeDeploymentNotes?: boolean
 }
 
 export interface ApiResponse<T = any> {

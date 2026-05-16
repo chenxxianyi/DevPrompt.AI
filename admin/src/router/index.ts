@@ -26,6 +26,7 @@ const router = createRouter({
         { path: 'orders', name: 'Orders', meta: { title: '订单管理' }, component: () => import('@/views/Orders.vue') },
         { path: 'trial-requests', name: 'TrialRequests', meta: { title: '试用申请管理' }, component: () => import('@/views/TrialRequests.vue') },
         { path: 'project-types', name: 'ProjectTypes', meta: { title: '项目类型管理' }, component: () => import('@/views/ProjectTypes.vue') },
+        { path: 'prompt-recipes', name: 'PromptRecipes', meta: { title: 'Prompt Recipe 管理' }, component: () => import('@/views/PromptRecipes.vue') },
       ],
     },
   ],

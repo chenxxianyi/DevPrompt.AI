@@ -71,6 +71,7 @@ func main() {
 		&model.Order{},
 		&model.ProjectType{},
 		&model.TrialRequest{},
+		&model.PromptRecipe{},
 	); err != nil {
 		log.Fatalf("自动迁移失败: %v", err)
 	}
@@ -112,6 +113,7 @@ func main() {
 	orderRepo := repository.NewOrderRepository(db)
 	projectTypeRepo := repository.NewProjectTypeRepository(db)
 	trialRequestRepo := repository.NewTrialRequestRepository(db)
+	promptRecipeRepo := repository.NewPromptRecipeRepository(db)
 
 	// Services
 	authService := service.NewAuthService(userRepo, cfg.JWT.Secret, cfg.JWT.ExpireHours)
@@ -164,6 +166,7 @@ func main() {
 	orderAdminHandler := admin.NewOrderAdminHandler(orderRepo)
 	projectTypeAdminHandler := admin.NewProjectTypeAdminHandler(projectTypeRepo)
 	dashboardHandler := admin.NewDashboardHandler(db)
+	promptRecipeAdminHandler := admin.NewPromptRecipeAdminHandler(promptRecipeRepo)
 
 	// 6. 创建 Gin 路由
 	r := gin.Default()
@@ -261,6 +264,12 @@ func main() {
 		adminGroup.POST("/project-types", projectTypeAdminHandler.Create)
 		adminGroup.PUT("/project-types/:id", projectTypeAdminHandler.Update)
 		adminGroup.DELETE("/project-types/:id", projectTypeAdminHandler.Delete)
+		// Prompt Recipes CRUD
+		adminGroup.GET("/prompt-recipes", promptRecipeAdminHandler.List)
+		adminGroup.POST("/prompt-recipes", promptRecipeAdminHandler.Create)
+		adminGroup.PUT("/prompt-recipes/:id", promptRecipeAdminHandler.Update)
+		adminGroup.DELETE("/prompt-recipes/:id", promptRecipeAdminHandler.Delete)
+		adminGroup.PUT("/prompt-recipes/:id/set-default", promptRecipeAdminHandler.SetDefault)
 	}
 
 	// 7. 启动服务

@@ -35,6 +35,19 @@ const optimizeLevels = [
 
 const codeStyles = ['简洁实用', '严谨规范', '函数式', '面向对象', 'TypeScript 严格模式']
 
+const qualityModes = [
+  { value: 'concise', label: '简洁' },
+  { value: 'standard', label: '标准' },
+  { value: 'expert', label: '专家' },
+]
+
+const outputFormats = [
+  { value: 'markdown', label: 'Markdown' },
+  { value: 'checklist', label: '清单' },
+  { value: 'json', label: 'JSON' },
+  { value: 'plain', label: '纯 Prompt' },
+]
+
 onMounted(async () => {
   if (route.query.type && tabs.some(t => t.value === route.query.type)) {
     gen.setTab(route.query.type as GeneratorTab)
@@ -285,6 +298,53 @@ function exportMarkdown() {
               <span class="ios-chip__dot" :style="{ background: tool.color }" />
               {{ tool.name }}
             </button>
+          </div>
+        </div>
+      </IosGlassPanel>
+
+      <!-- ============ Quality Options ============ -->
+      <IosGlassPanel size="md" class="ios-gen__panel">
+        <h3 class="ios-text-headline ios-gen__panel-title">生成质量</h3>
+
+        <div class="ios-field">
+          <label class="ios-field__label">详细程度</label>
+          <IosSegmentedControl
+            :model-value="gen.qualityMode"
+            :options="qualityModes"
+            size="sm"
+            @update:model-value="(v: string) => gen.qualityMode = v as 'concise' | 'standard' | 'expert'"
+          />
+        </div>
+
+        <div class="ios-field">
+          <label class="ios-field__label">输出格式</label>
+          <IosSegmentedControl
+            :model-value="gen.outputFormat"
+            :options="outputFormats"
+            size="sm"
+            @update:model-value="(v: string) => gen.outputFormat = v as 'markdown' | 'checklist' | 'json' | 'plain'"
+          />
+        </div>
+
+        <div class="ios-field">
+          <label class="ios-field__label">高级选项</label>
+          <div class="ios-toggle-group">
+            <label class="ios-toggle">
+              <input type="checkbox" v-model="gen.includeAcceptanceCriteria">
+              <span>验收标准</span>
+            </label>
+            <label class="ios-toggle">
+              <input type="checkbox" v-model="gen.includeRiskCheck">
+              <span>风险检查</span>
+            </label>
+            <label class="ios-toggle">
+              <input type="checkbox" v-model="gen.includeTestPlan">
+              <span>测试建议</span>
+            </label>
+            <label class="ios-toggle">
+              <input type="checkbox" v-model="gen.includeDeploymentNotes">
+              <span>部署建议</span>
+            </label>
           </div>
         </div>
       </IosGlassPanel>
@@ -656,5 +716,29 @@ function exportMarkdown() {
   font-size: 14px;
   font-weight: 500;
   margin-top: 12px;
+}
+
+.ios-toggle-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+.ios-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--ios-color-label-primary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.ios-toggle input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  accent-color: var(--ios-color-tint);
+  cursor: pointer;
 }
 </style>

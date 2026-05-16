@@ -54,6 +54,10 @@
             <el-icon><Grid /></el-icon>
             <span>项目类型管理</span>
           </el-menu-item>
+          <el-menu-item index="/prompt-recipes">
+            <el-icon><MagicStick /></el-icon>
+            <span>Prompt Recipe</span>
+          </el-menu-item>
         </el-menu>
       </el-aside>
 
@@ -98,7 +102,7 @@ import { useAuthStore } from '@/store/auth'
 import { useAppStore } from '@/store/app'
 import {
   Odometer, User, Collection, Document, Cpu,
-  List, Coin, Tickets, Fold, Expand, UserFilled, Grid, MessageBox,
+  List, Coin, Tickets, Fold, Expand, UserFilled, Grid, MessageBox, MagicStick,
 } from '@element-plus/icons-vue'
 
 const route = useRoute()
